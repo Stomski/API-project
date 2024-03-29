@@ -19,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: {
           len: [4, 30],
-          isEmail: false,
+          isNotEmail(value) {
+            if (Validator.isEmail(value)) {
+              throw new Error("cannot be email");
+            }
+          },
         },
       },
       email: {
@@ -28,15 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: {
           len: [3, 256],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("cannot be email");
-            }
-          },
+          isEmail: true,
         },
       },
       hashedPassword: {
-        type: DataTypes.BINARY,
+        type: DataTypes.STRING.BINARY,
         allowNull: false,
         validate: {
           len: [60, 60],
