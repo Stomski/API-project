@@ -1,6 +1,6 @@
 "use strict";
 const { Model, Validator } = require("sequelize");
-const { options } = require("../../routes");
+// const { options } = require("../../routes");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
           exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
         },
       },
-    },
-    options
+    }
+    // options
   );
   return User;
 };
