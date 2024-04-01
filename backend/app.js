@@ -46,11 +46,9 @@ app.use(
 app.use(routes); // Connect all the routes
 
 app.get("/", (req, res) => {
-  console.log(
-    "IM SEARCHING FOR THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  );
+  console.log("youre killing it");
   res.json({
-    message: "come on now",
+    message: "i saw this coming",
   });
 });
 
