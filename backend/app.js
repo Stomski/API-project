@@ -45,6 +45,15 @@ app.use(
 // ...
 app.use(routes); // Connect all the routes
 
+app.get("/", (req, res) => {
+  console.log(
+    "IM SEARCHING FOR THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  );
+  res.json({
+    message: "come on now",
+  });
+});
+
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";
