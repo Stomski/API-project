@@ -21,13 +21,6 @@ const validateLogin = [
   handleValidationErrors,
 ];
 
-router.get("/", (req, res, next) => {
-  console.log(
-    "THIS IS A TEST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  );
-  next();
-});
-
 // Log in
 router.post("/", validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
