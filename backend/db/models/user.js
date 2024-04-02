@@ -10,6 +10,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.spot, {
+        foreignKey: "ownerId",
+        onDelete: "CASCADE",
+        hooks: true,
+      });
+
+      User.belongsToMany(models.Spot, {
+        through: models.Booking,
+        foreignKey: "userId",
+        otherKey: "spotId",
+      });
+      User.belongsToMany(models.Spot, {
+        through: models.Review,
+        foreignKey: "userId",
+        otherKey: "spotId",
+      });
     }
   }
   User.init(
@@ -29,9 +45,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       firstName: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       lastName: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
