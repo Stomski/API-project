@@ -54,10 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       lat: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
       },
       lng: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
       },
       name: {
         type: DataTypes.STRING,
