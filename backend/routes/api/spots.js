@@ -28,7 +28,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
     where: {
       ownerId: currUser,
     },
-    include: ["SpotImages"],
+    include: ["SpotImages", "Reviews"],
   });
 
   if (currSpots === null) {
@@ -46,17 +46,31 @@ router.get("/current", requireAuth, async (req, res, next) => {
     ele = ele.toJSON();
     console.log(ele, "<<<<<<<<<<<<<<< ele");
     console.log(ele.SpotImages, "<<<<<<ELE > SPOT IMAGES");
+    //avg review
+
+    if (ele.Reviews.length) {
+      console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
+      let sum = 0;
+      ele.Reviews.forEach((ele) => {
+        console.log(ele.stars);
+        sum += ele.stars;
+      });
+
+      ele.avgRating = sum / ele.Reviews.length;
+    }
+
     if (ele.SpotImages.length) {
       ele.previewImage = ele.SpotImages[0].url;
-      delete ele.SpotImages;
     } else {
       ele.previewImage = null;
     }
 
+    delete ele.SpotImages;
+    delete ele.Reviews;
     spotArray.push(ele);
   });
 
-  console.log(spotArray);
+  // console.log(">>>>>>>>>>>>>>>> THIS IS WHAT IM RETURNING", spotArray, "<<<<<<<<<<<<<< RETURNING THIS");
 
   res.json(spotArray);
 });
@@ -175,12 +189,14 @@ the provided id
 router.post("/:spotId/images", requireAuth, async (req, res, next) => {
   const currUser = req.user.toJSON().id;
   // console.log(req.body, "req.body*(******************");
+
   const spot = await Spot.findByPk(req.params.spotId);
 
   // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", spot.ownerId);
 
   if (spot === null) {
     const err = new Error("Spot couldn't be found");
+    err.status = 404;
     return next(err);
   }
 
@@ -191,11 +207,11 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
 
   req.body.spotId = currUser;
   const newIMage = await SpotImage.create(req.body);
-  console.log(newIMage);
+  console.log(newIMage.toJSON());
 
   res.json(newIMage);
 });
-
+/***************** *    CREATE A NEW SPOT    *************************/
 /*
 Creates and returns a new spot.
 
