@@ -6,7 +6,7 @@ router.get("/", async (req, res, next) => {
   console.log("crushing it", Spot, ",,,,,,,,,,, spot <<<<<<<<<<");
 
   const spots = await Spot.findAll({
-    include: ["SpotImages"],
+    include: ["SpotImages", "Reviews"],
   });
 
   res.json(spots);
