@@ -7,19 +7,11 @@ router.use((req, res, next) => {
   console.log("this is the top of the spots router");
   next();
 });
+/***************** *   ALL SPOTS BY OWNER   *************************/
+
+router.put("/", requireAuth, (req, res, next) => {});
 
 /***************** *   ALL SPOTS BY OWNER   *************************/
-/*
-get all spots by current user
-
-Returns all the spots owned (created) by the current user.
-
- An authenticated user is required for a successful response
- Successful response includes only spots created by the current user
- Spot data returned includes the id, ownerId, address, city,
-state, country, lat, lng, name, description, price, createdAt,
-updatedAt, previewImage, and avgRating
-*/
 
 router.get("/current", requireAuth, async (req, res, next) => {
   const currUser = req.user.toJSON().id;
@@ -44,12 +36,15 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
   currSpots.forEach((ele) => {
     ele = ele.toJSON();
-    console.log(ele, "<<<<<<<<<<<<<<< ele");
-    console.log(ele.SpotImages, "<<<<<<ELE > SPOT IMAGES");
+    // console.log(ele, "<<<<<<<<<<<<<<< ele");
+    // console.log(ele.SpotImages, "<<<<<<ELE > SPOT IMAGES");
     //avg review
-
+    console.log(
+      "IM SEARCHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!>>>>>>>> ",
+      ele.previewImage
+    );
     if (ele.Reviews.length) {
-      console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
+      // console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
       let sum = 0;
       ele.Reviews.forEach((ele) => {
         console.log(ele.stars);
@@ -59,14 +54,19 @@ router.get("/current", requireAuth, async (req, res, next) => {
       ele.avgRating = sum / ele.Reviews.length;
     }
 
-    if (ele.SpotImages.length) {
-      ele.previewImage = ele.SpotImages[0].url;
+    if (ele.previewImage === null) {
+      if (ele.SpotImages.length) {
+        ele.previewImage = ele.SpotImages[0].url;
+      } else {
+        ele.previewImage = null;
+      }
     } else {
-      ele.previewImage = null;
+      ele.previewImage = ele.previewImage.toJSON().url;
     }
 
     delete ele.SpotImages;
     delete ele.Reviews;
+
     spotArray.push(ele);
   });
 
@@ -76,22 +76,6 @@ router.get("/current", requireAuth, async (req, res, next) => {
 });
 
 /***************** *    SPOT DETAILS BY ID    *************************/
-
-/*
-Returns the details of a spot specified by its id.
-
- Successful response includes data only for the specified spot
- Spot data returned includes the id, ownerId, address, city,
-state, country, lat, lng, name, description, price, createdAt,
-and updatedAt
- Spot data returns aggregate data for numReviews and avgStarRating
- Spot data returns associated data for SpotImages, an array of image
-data including the id, url, and preview
- Spot data returns associated data for Owner, including the id,
-firstName, and lastName
- Error response with status 404 is given when a spot does not exist with
-the provided id
-*/
 
 router.get("/:spotId", requireAuth, async (req, res, next) => {
   const { spotId } = req.params;
@@ -175,17 +159,6 @@ router.get("/", async (req, res, next) => {
 
 /***************** *    ADD IMAGE TO SPOT    *************************/
 
-/*  add image to spot based on spotID
-Create and return a new image for a spot specified by id.
-
- An authenticated user is required for a successful response
- Only the owner of the spot is authorized to add an image
- New image exists in the database after request
- Image data returned includes the id, url, and preview
- Error response with status 404 is given when a spot does not exist with
-the provided id
-*/
-
 router.post("/:spotId/images", requireAuth, async (req, res, next) => {
   const currUser = req.user.toJSON().id;
   // console.log(req.body, "req.body*(******************");
@@ -211,18 +184,8 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
 
   res.json(newIMage);
 });
-/***************** *    CREATE A NEW SPOT    *************************/
-/*
-Creates and returns a new spot.
 
- An authenticated user is required for a successful response
- New spot exists in the database after request
- Spot data returned includes the id, ownerId, address, city,
-state, country, lat, lng, name, description, price, createdAt,
-and updatedAt
- Error response with status 400 is given when body validations for the
-address, city, state, country, lat, lng, name, description, or price are violated
-*/
+/***************** *    CREATE A NEW SPOT    *************************/
 
 router.post("/", requireAuth, async (req, res, next) => {
   console.log("req.body", req.body);
