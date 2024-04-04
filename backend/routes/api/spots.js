@@ -4,12 +4,59 @@ const { Spot, Session, SpotImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 
 router.use((req, res, next) => {
-  console.log("this is the top of the spots router");
+  console.log(
+    "**************************this is the top of the spots router*******************************"
+  );
   next();
 });
-/***************** *   ALL SPOTS BY OWNER   *************************/
 
-router.put("/", requireAuth, (req, res, next) => {});
+/***************** *   DELETE A SPOT *************************/
+
+router.delete("/:spotId", requireAuth, async (req, res, next) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+  console.log("spot", spot);
+  if (!spot) {
+    return next(new Error("spot couldnt be found"));
+  }
+  if (spot.ownerId !== req.user.id) {
+    const err = new Error("cannot delete spot you dont own");
+    return next(err);
+  }
+
+  await spot.destroy();
+
+  res.json({ message: "Successfully deleted" });
+});
+
+/***************** *   EDIT SPOT  *************************/
+
+router.put("/:spotId", requireAuth, async (req, res, next) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+  if (spot.ownerId !== req.user.id) {
+    const err = new Error("cant edit spot you dont own");
+    return next(err);
+  }
+
+  // console.log(spot.ownerId, "OWNER ID");
+  // console.log(spot.toJSON());
+  console.log("********** REQ BODY ****************", req.body);
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+  if (address) spot.address = address;
+  if (city) spot.city = city;
+  if (state) spot.state = state;
+  if (country) spot.country = country;
+  if (lat) spot.lat = lat;
+  if (lng) spot.lng = lng;
+  if (name) spot.name = name;
+  if (description) spot.description = description;
+  if (price) spot.price = price;
+  let apple = await spot.save();
+  apple = apple.toJSON();
+  delete spot.previewImage;
+
+  res.json(spot);
+});
 
 /***************** *   ALL SPOTS BY OWNER   *************************/
 
