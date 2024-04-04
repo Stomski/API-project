@@ -1,7 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { Spot, Session, SpotImage } = require("../../db/models");
+const {
+  Spot,
+  Session,
+  SpotImage,
+  Review,
+  ReviewImage,
+} = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
+const e = require("express");
 
 router.use((req, res, next) => {
   console.log(
@@ -56,6 +63,19 @@ router.put("/:spotId", requireAuth, async (req, res, next) => {
   delete spot.previewImage;
 
   res.json(spot);
+});
+
+/*******************************************  GET ALL REVIEWS BY SPOT  ************************************************** */
+
+router.get("/:spotId/reviews", async (req, res, next) => {
+  const reviews = await Review.findAll({
+    where: {
+      spotId: req.params.spotId,
+    },
+    include: [ReviewImage],
+  });
+
+  res.json(reviews);
 });
 
 /***************** *   ALL SPOTS BY OWNER   *************************/

@@ -22,6 +22,7 @@ module.exports = {
           allowNull: false,
           references: {
             model: "Spots",
+            key: "id",
           },
           onDelete: "CASCADE",
         },
@@ -30,6 +31,7 @@ module.exports = {
           allowNull: false,
           references: {
             model: "Users",
+            key: "id",
           },
           onDelete: "CASCADE",
         },
