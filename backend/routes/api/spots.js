@@ -6,6 +6,7 @@ const {
   SpotImage,
   Review,
   ReviewImage,
+  User,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const e = require("express");
@@ -72,8 +73,14 @@ router.get("/:spotId/reviews", async (req, res, next) => {
     where: {
       spotId: req.params.spotId,
     },
-    include: [ReviewImage],
+    include: [ReviewImage, User],
   });
+
+  const spot = await Spot.findByPk(req.params.spotId);
+  if (!spot) {
+    return next(new Error("Spot Not Found"));
+  }
+  if (reviews.length === 0) [res.json("no reviews yet! :)")];
 
   res.json(reviews);
 });
@@ -140,6 +147,41 @@ router.get("/current", requireAuth, async (req, res, next) => {
   // console.log(">>>>>>>>>>>>>>>> THIS IS WHAT IM RETURNING", spotArray, "<<<<<<<<<<<<<< RETURNING THIS");
 
   res.json(spotArray);
+});
+
+/***************** *   Create a Review for a Spot based on the Spot's id   *************************/
+
+router.post("/:spotId/reviews", requireAuth, async (req, res, next) => {
+  console.log("crushing");
+
+  const spot = await Spot.findByPk(req.params.spotId);
+
+  const reviews = await Review.findAll({
+    where: {
+      spotId: req.params.spotId,
+      userId: req.user.id,
+    },
+  });
+
+  if (reviews.length) {
+    const err = new Error("cannot review same spot twice");
+    err.status = 500;
+
+    return next(err);
+  }
+
+  if (!spot) {
+    const err = new Error("Spot couldnt be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  const { review, stars } = req.body;
+  const reviewstuff = { review, stars };
+  reviewstuff.spotId = req.params.spotId;
+  reviewstuff.userId = req.user.id;
+  const newReview = await Review.create({ ...reviewstuff });
+  res.json(newReview);
 });
 
 /***************** *    SPOT DETAILS BY ID    *************************/
