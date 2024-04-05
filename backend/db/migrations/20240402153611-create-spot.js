@@ -61,8 +61,6 @@ module.exports = {
         },
         previewImage: {
           type: Sequelize.INTEGER,
-          references: { model: "SpotImages" },
-          onDelete: "SET NULL",
           defaultValue: null,
         },
         createdAt: {
