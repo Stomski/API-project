@@ -7,9 +7,11 @@ const {
   Review,
   ReviewImage,
   User,
+  Booking,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const e = require("express");
+const booking = require("../../db/models/booking");
 
 router.use((req, res, next) => {
   console.log(
@@ -78,11 +80,126 @@ router.get("/:spotId/reviews", async (req, res, next) => {
 
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) {
-    return next(new Error("Spot Not Found"));
+    const err = new Error("Spot couldnt be found");
+    err.status = 404;
+    return next(err);
   }
   if (reviews.length === 0) [res.json("no reviews yet! :)")];
 
   res.json(reviews);
+});
+
+/* ************************************** GET ALL BOOKINGS BY SPOT ID ********************************** */
+
+router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
+  const currUser = req.user.id;
+
+  const foundBookings = await Booking.findAll({
+    where: { spotId: req.params.spotId },
+    include: [User],
+  });
+  const spot = await Spot.findByPk(req.params.spotId);
+
+  if (!spot) {
+    const err = new Error("Spot couldnt be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  if (!foundBookings.length) {
+    const err = new Error("no bookings found");
+    err.status = 404;
+    return next(err);
+  }
+  if (req.user.id === spot.userId) {
+    res.json(foundBookings);
+  } else {
+    const answerArray = [];
+    foundBookings.forEach((ele) => {
+      ele = ele.toJSON();
+      console.log(ele, "ELE<<<<<<<<<<<<<<<<<");
+      const newObj = {};
+      newObj.spotId = ele.spotId;
+      newObj.startDate = ele.startDate;
+      newObj.endDate = ele.endDate;
+      answerArray.push(newObj);
+    });
+
+    res.json(answerArray);
+  }
+});
+
+/* ************************************** CREATE A BOOKING BY SPOT ID ********************************** */
+
+router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
+  const { startDate, endDate } = req.body;
+
+  let startDateTime = new Date(startDate);
+  let endDateTime = new Date(endDate);
+  startDateTime = startDateTime.getTime();
+  endDateTime = endDateTime.getTime();
+
+  if (startDateTime >= endDateTime) {
+    const err = new Error("endDate cannot be on or before startDate");
+    err.status = 400;
+    return next(err);
+  }
+
+  const spot = await Spot.findByPk(req.params.spotId);
+
+  if (!spot) {
+    const err = new Error("Spot couldnt be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  if (spot.ownerId === req.user.id) {
+    const err = new Error("cannot book your own spot");
+    return next(err);
+  }
+
+  const bookings = await Booking.findAll({
+    where: {
+      spotId: req.params.spotId,
+    },
+  });
+
+  bookings.forEach((ele) => {
+    ele = ele.toJSON();
+    (ele.startDate = ele.startDate.getTime()),
+      (ele.endDate = ele.endDate.getTime());
+
+    if (startDateTime >= ele.startDate && startDateTime <= ele.endDate) {
+      const err = new Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.error = {
+        startDate: "Start date conflicts with an existing booking",
+      };
+      err.status = 403;
+      return next(err);
+    }
+
+    if (endDateTime >= ele.startDate && endDateTime <= ele.endDate) {
+      const err = new Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.error = {
+        endDate: "Start date conflicts with an existing booking",
+      };
+      err.status = 403;
+      return next(err);
+    }
+  });
+
+  const newBooking = await Booking.create({
+    startDate,
+    endDate,
+    spotId: req.params.spotId,
+    userId: req.user.id,
+  });
+
+  res.json(newBooking);
 });
 
 /***************** *   ALL SPOTS BY OWNER   *************************/
