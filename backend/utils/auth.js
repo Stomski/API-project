@@ -6,8 +6,8 @@ const { User } = require("../db/models");
 const { secret, expiresIn } = jwtConfig;
 
 // Sends a JWT Cookie
+
 const setTokenCookie = (res, user) => {
-  // Create the token.
   const safeUser = {
     id: user.id,
     email: user.email,
@@ -73,5 +73,3 @@ const requireAuth = function (req, _res, next) {
 };
 
 module.exports = { setTokenCookie, restoreUser, requireAuth };
-
-//above all comes from backend phase 3 auth me

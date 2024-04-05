@@ -10,8 +10,82 @@ const {
   Booking,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
-const e = require("express");
-// const booking = require("../../db/models/booking");
+const { check, query, validationResult } = require("express-validator");
+
+const { handleValidationErrors } = require("../../utils/validation");
+
+const queryValidate = [
+  query("page")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Page must be greater than or equal to 1"),
+  query("size")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Page must be greater than or equal to 1"),
+  query("maxLat")
+    .optional()
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Maximum latitude is invalid"),
+  query("minLat")
+    .optional()
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Minimum latitude is invalid"),
+  query("minLng")
+    .optional()
+    .isFloat({ min: -180, max: 180 })
+    .withMessage("Minimum longitude is invalid"),
+  query("maxLng")
+    .optional()
+    .isFloat({ min: -180, max: 180 })
+    .withMessage("Maximum longitude is invalid"),
+  query("maxPrice")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Maximum price must be greater than or equal to 0"),
+  query("minPrice")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Minimum price must be greater than or equal to 0"),
+];
+
+const spotValidator = (req, res, next) => {
+  let { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+
+  if (
+    !address ||
+    !city ||
+    !state ||
+    !country ||
+    !lat ||
+    !lng ||
+    !name ||
+    !description ||
+    !price ||
+    price < 0 ||
+    lat < -90 ||
+    lat > 90 ||
+    lng < -180 ||
+    lng > 180
+  ) {
+    return res.status(400).json({
+      message: "Bad Request",
+      errors: {
+        address: "Street address is required",
+        city: "City is required",
+        state: "State is required",
+        country: "Country is required",
+        lat: "Latitude must be within -90 and 90",
+        lng: "Longitude must be within -180 and 180",
+        name: "Name must be less than 50 characters",
+        description: "Description is required",
+        price: "Price per day must be a positive number",
+      },
+    });
+  }
+  next();
+};
 
 router.use((req, res, next) => {
   console.log(
@@ -344,44 +418,70 @@ router.get("/:spotId", requireAuth, async (req, res, next) => {
 
 /***************** *    GET ALL SPOTS    *************************/
 
-router.get("/", async (req, res, next) => {
-  console.log("this is hit");
-  const spots = await Spot.findAll({
-    include: ["SpotImages", "Reviews"],
-  });
-  let spotArray = [];
+router.get(
+  "/",
+  queryValidate,
+  handleValidationErrors,
+  async (req, res, next) => {
+    let { page, size, minLat, minLng, maxLat, maxLng, minPrice, Maxprice } =
+      req.query;
 
-  if (spots !== null) {
-    spots.forEach((ele) => {
-      ele = ele.toJSON();
+    page = parseInt(page) || 1;
+    size = parseInt(size) || 20;
 
-      //avg review
+    if (page > 10) page = 10;
+    if (size > 20) size = 20;
 
-      if (ele.Reviews.length) {
-        console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
-        let sum = 0;
-        ele.Reviews.forEach((ele) => {
-          console.log(ele.stars);
-          sum += ele.stars;
-        });
+    let paginateObj = {
+      limit: size,
+      offset: size * (page - 1),
+    };
 
-        ele.avgRating = sum / ele.Reviews.length;
-        delete ele.Reviews;
-      }
+    let searchObj = {
+      where: {},
+    };
 
-      //find and set previewImage
-
-      if (ele.SpotImages.length) {
-        ele.previewImage = ele.SpotImages[0].url;
-        delete ele.SpotImages;
-      } else {
-        ele.previewImage = null;
-      }
-      spotArray.push(ele);
+    const spots = await Spot.findAll({
+      include: ["SpotImages", "Reviews"],
+      ...paginateObj,
+      ...searchObj,
     });
+
+    let spotArray = [];
+
+    if (spots !== null) {
+      spots.forEach((ele) => {
+        ele = ele.toJSON();
+
+        //avg review
+
+        if (ele.Reviews.length) {
+          console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
+          let sum = 0;
+          ele.Reviews.forEach((ele) => {
+            console.log(ele.stars);
+            sum += ele.stars;
+          });
+
+          ele.avgRating = sum / ele.Reviews.length;
+          delete ele.Reviews;
+        }
+
+        //find and set previewImage
+
+        if (ele.SpotImages.length) {
+          ele.previewImage = ele.SpotImages[0].url;
+          delete ele.SpotImages;
+        } else {
+          ele.previewImage = null;
+        }
+        spotArray.push(ele);
+      });
+    }
+
+    res.json({ Spots: spotArray });
   }
-  res.json({ Spots: spotArray });
-});
+);
 
 /***************** *    ADD IMAGE TO SPOT    *************************/
 
@@ -413,16 +513,22 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
 
 /***************** *    CREATE A NEW SPOT    *************************/
 
-router.post("/", requireAuth, async (req, res, next) => {
-  console.log("req.body", req.body);
-  console.log(
-    "req.user>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
-    req.user.toJSON().id
-  );
-  req.body.ownerId = req.user.toJSON().id;
-  const newSpot = await Spot.create(req.body);
-  res.status = 201;
-  res.json(newSpot);
-});
+router.post(
+  "/",
+  requireAuth,
+  spotValidator,
+  handleValidationErrors,
+  async (req, res, next) => {
+    console.log("req.body", req.body);
+    console.log(
+      "req.user>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
+      req.user.toJSON().id
+    );
+    req.body.ownerId = req.user.toJSON().id;
+    const newSpot = await Spot.create(req.body);
+    res.status = 201;
+    res.json(newSpot);
+  }
+);
 
 module.exports = router;
