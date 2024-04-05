@@ -20,6 +20,23 @@ router.use((req, res, next) => {
 
 /***************** *   DELETE A REVIEW IMAGE   *************************/
 
-router.delete("/:imageId", requireAuth);
+router.delete("/:imageId", requireAuth, async (req, res, next) => {
+  const image = await ReviewImage.findByPk(req.params.imageId);
+
+  if (!image) {
+    const err = new Error("Image couldnt be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  if (req.user.id !== image.userId) {
+    const err = new Error("cant edit spot you dont own");
+    return next(err);
+  }
+
+  image.destroy();
+
+  res.json("Succesfully deleted");
+});
 
 module.exports = router;
