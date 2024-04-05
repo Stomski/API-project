@@ -11,7 +11,7 @@ const {
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const e = require("express");
-const booking = require("../../db/models/booking");
+// const booking = require("../../db/models/booking");
 
 router.use((req, res, next) => {
   console.log(
