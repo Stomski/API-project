@@ -90,18 +90,36 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
   const reviewId = req.params.reviewId;
   const { url } = req.body;
 
-  const review = await Review.findByPk(reviewId);
+  const review = await Review.findByPk(reviewId, {
+    include: [ReviewImage],
+  });
+
   if (!review) {
     const err = new Error("Review couldn't be found");
+    err.title = "resource not found";
     err.status = 404;
     return next(err);
   }
+  console.log(review);
 
-  if (review.userId !== currUser) {
-    const err = new Error("can only edit your own reviews");
+  // if (review.userId !== currUser) {
+  //   const err = new Error("can only edit your own reviews");
+  //   err.status = 403;
+  //   return next(err);
+  // }
+  const reviewJSON = review.toJSON();
+
+  if (reviewJSON.ReviewImages.length >= 10) {
+    const err = new Error(
+      "Maximum number of images for this resource was reached"
+    );
+    err.title = "Max num images exceeded";
     err.status = 403;
     return next(err);
   }
+
+  // console.log(spot);
+
   let newReview;
   if (url) {
     newReview = await ReviewImage.create({ url, reviewId });
