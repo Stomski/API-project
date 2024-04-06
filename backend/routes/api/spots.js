@@ -501,6 +501,8 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
 
   if (spot.ownerId !== currUser) {
     const err = new Error("can only add pictures to spots you own");
+    err.title = "Not AUTHed";
+    err.status = 403;
     return next(err);
   }
 
