@@ -276,7 +276,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
   res.json(newBooking);
 });
 
-/***************** *   ALL SPOTS BY OWNER   *************************/
+/***************** *   GET ALL SPOTS BY OWNER  /USER *************************/
 
 router.get("/current", requireAuth, async (req, res, next) => {
   const currUser = req.user.toJSON().id;
@@ -288,8 +288,11 @@ router.get("/current", requireAuth, async (req, res, next) => {
     include: ["SpotImages", "Reviews"],
   });
 
-  if (currSpots === null) {
+  if (!currSpots.length) {
     const err = new Error("no spots owned by current user");
+    console.log(
+      "searching for thhis 1d!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    );
     return next(err);
   }
 
@@ -319,14 +322,10 @@ router.get("/current", requireAuth, async (req, res, next) => {
       ele.avgRating = sum / ele.Reviews.length;
     }
 
-    if (ele.previewImage === null) {
-      if (ele.SpotImages.length) {
-        ele.previewImage = ele.SpotImages[0].url;
-      } else {
-        ele.previewImage = null;
-      }
+    if (ele.SpotImages.length) {
+      ele.previewImage = ele.SpotImages[0].url;
     } else {
-      ele.previewImage = ele.previewImage.toJSON().url;
+      ele.previewImage = null;
     }
 
     delete ele.SpotImages;
@@ -408,10 +407,14 @@ router.get("/:spotId", requireAuth, async (req, res, next) => {
     spot.numReviews = spot.Reviews.length;
     spot.avgRating = sum / spot.Reviews.length;
     delete spot.Reviews;
+  } else {
+    spot.avgRating = null;
   }
 
+  spot.numReviews = spot.Reviews.length ?? 0;
   spot.Owner = spot.User;
   delete spot.User;
+  delete spot.Reviews;
 
   res.json(spot);
 });
