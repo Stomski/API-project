@@ -8,6 +8,7 @@ const {
   ReviewImage,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
+const { dateFormatting } = require("../../utils/functionality");
 
 const reviewValidator = (req, res, next) => {
   let { review, stars } = req.body;
@@ -25,7 +26,7 @@ const reviewValidator = (req, res, next) => {
 
 router.use((req, res, next) => {
   console.log(
-    "**************************************TOP OF REVIEW ROUTER ********************************** for real though "
+    "**************************************TOP OF REVIEW ROUTER **********************************  "
   );
   next();
 });
@@ -62,12 +63,13 @@ router.put(
   requireAuth,
   reviewValidator,
   async (req, res, next) => {
-    const foundReview = await Review.findByPk(req.params.reviewID);
+    let foundReview = await Review.findByPk(req.params.reviewID);
 
     const { review, stars } = req.body;
 
     if (!foundReview) {
       const err = new Error("Review couldn't be found");
+      err.title = "Couldn't find a Review with the specified id";
       err.status = 404;
       return next(err);
     }
@@ -83,6 +85,10 @@ router.put(
     foundReview.stars = stars;
 
     foundReview.save();
+    foundReview = foundReview.toJSON();
+
+    foundReview.createdAt = dateFormatting(foundReview.createdAt);
+    foundReview.updatedAt = dateFormatting(foundReview.updatedAt);
 
     res.json(foundReview);
   }
@@ -99,6 +105,11 @@ router.get("/current", requireAuth, async (req, res, next) => {
     include: [ReviewImage, Spot],
   });
 
+  reviews.forEach((ele) => {
+    ele = ele.toJSON();
+    ele.createdAt = dateFormatting(ele.createdAt);
+    ele.updatedAt = dateFormatting(ele.updatedAt);
+  });
   const answer = { Reviews: reviews };
 
   res.json(answer);
@@ -142,11 +153,11 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
   // console.log(spot);
 
   let newReview;
-  if (url) {
-    newReview = await ReviewImage.create({ url, reviewId });
-    // console.log(newReview);
-    // console.log("this is the add image review ID");
-  }
+
+  newReview = await ReviewImage.create({ url, reviewId });
+  newReview = newReview.toJSON();
+  newReview.createdAt = dateFormatting(newReview.createdAt);
+  newReview.updatedAt = dateFormatting(newReview.updatedAt);
 
   res.json(newReview);
 });
