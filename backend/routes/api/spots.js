@@ -114,7 +114,9 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
   const spot = await Spot.findByPk(req.params.spotId);
   console.log("spot", spot);
   if (!spot) {
-    return next(new Error("spot couldnt be found"));
+    const err = new Error("Spot couldnt be found");
+    err.status = 404;
+    return next(err);
   }
   if (spot.ownerId !== req.user.id) {
     const err = new Error("cannot delete spot you dont own");
