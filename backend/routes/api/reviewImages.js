@@ -25,12 +25,15 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
 
   if (!image) {
     const err = new Error("Image couldnt be found");
+    err.title = "Couldn't find a Review Image with the specified id";
     err.status = 404;
     return next(err);
   }
 
   if (req.user.id !== image.userId) {
     const err = new Error("cant edit spot you dont own");
+    err.status = 403;
+    err.titla = "request Error";
     return next(err);
   }
 
