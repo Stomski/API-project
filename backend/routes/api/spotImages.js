@@ -31,6 +31,7 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
 
   if (req.user.id !== image.userId) {
     const err = new Error("cant edit spot you dont own");
+    err.status = 403;
     return next(err);
   }
 
