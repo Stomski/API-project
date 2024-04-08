@@ -105,13 +105,17 @@ router.get("/current", requireAuth, async (req, res, next) => {
     },
     include: [ReviewImage, Spot],
   });
+  let answerArray = [];
 
-  reviews.forEach((ele) => {
+  for (let ele of reviews) {
     ele = ele.toJSON();
     ele.createdAt = dateFormatting(ele.createdAt);
     ele.updatedAt = dateFormatting(ele.updatedAt);
-  });
-  const answer = { Reviews: reviews };
+    const foundSpot = await Spot.findByPk(ele.Spot.id);
+    answerArray.push(ele);
+  }
+
+  const answer = { Reviews: answerArray };
 
   res.json(answer);
 });
