@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { Op, sequelize } = require("sequelize");
 const {
   Spot,
   Session,
@@ -18,6 +19,7 @@ const {
   spotValidator,
 } = require("../../utils/functionality");
 const { handleValidationErrors } = require("../../utils/validation");
+const { errorMonitor } = require("mocha/lib/runner");
 
 const queryValidate = [
   query("page")
@@ -299,6 +301,17 @@ router.post(
         err.status = 403;
         return next(err);
       }
+      if (startDateTime < ele.startDate && endDateTime > ele.endDate) {
+        const err = new Error(
+          "Sorry, this spot is already booked for the specified dates"
+        );
+        err.error = {
+          startDate: "Booking dates surround existing booking",
+          endDate: "Booking dates surround existing booking",
+        };
+        err.status = 403;
+        return next(err);
+      }
     });
 
     let newBooking = await Booking.create({
@@ -500,9 +513,9 @@ router.get(
   queryValidate,
   handleValidationErrors,
   async (req, res, next) => {
-    let { page, size, minLat, minLng, maxLat, maxLng, minPrice, Maxprice } =
+    let { page, size, minLat, minLng, maxLat, maxLng, minPrice, maxPrice } =
       req.query;
-
+    console.log("SO QWERE LOOKINMG  GGL   FOR PARAMSSSSSS");
     page = parseInt(page) || 1;
     size = parseInt(size) || 20;
 
@@ -513,10 +526,33 @@ router.get(
       limit: size,
       offset: size * (page - 1),
     };
-
     let searchObj = {
       where: {},
     };
+
+    if (minLng && maxLng) {
+      searchObj.where.lng = { [Op.between]: [minLng, maxLng] };
+    } else if (minLng) {
+      searchObj.where.lng = { [Op.gte]: minLng };
+    } else if (maxLng) {
+      searchObj.where.lng = { [Op.lte]: maxLng };
+    }
+
+    if (minLat && maxLat) {
+      searchObj.where.lat = { [Op.between]: [minLat, maxLat] };
+    } else if (minLat) {
+      searchObj.where.lat = { [Op.gte]: minLat };
+    } else if (maxLat) {
+      queryObj.where.lat = { [Op.lte]: maxLat };
+    }
+
+    if (minPrice && maxPrice) {
+      searchObj.where.price = { [Op.between]: [minPrice, maxPrice] };
+    } else if (minPrice) {
+      searchObj.where.price = { [Op.gte]: minPrice };
+    } else if (maxPrice) {
+      searchObj.where.price = { [Op.lte]: maxPrice };
+    }
 
     const spots = await Spot.findAll({
       include: ["SpotImages", "Reviews"],

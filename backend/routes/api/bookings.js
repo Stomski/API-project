@@ -49,73 +49,98 @@ router.delete("/:bookingId", requireAuth, async (req, res, next) => {
 
 /* ************************************** EDIT A BOOKING  ********************************** */
 
-router.put("/:bookingId", requireAuth, async (req, res, next) => {
-  const currUser = req.user.id;
-  const booking = await Booking.findByPk(req.params.bookingId);
+router.put(
+  "/:bookingId",
+  requireAuth,
+  bookingValidators,
+  async (req, res, next) => {
+    const currUser = req.user.id;
+    const booking = await Booking.findByPk(req.params.bookingId);
 
-  const { startDate, endDate } = req.body;
-  if (!startDate || !endDate) {
-    const err = new Error("endDate and startdate required");
-    err.status = 400;
-    return next(err);
+    const { startDate, endDate } = req.body;
+    if (!startDate || !endDate) {
+      const err = new Error("endDate and startdate required");
+      err.status = 400;
+      return next(err);
+    }
+
+    if (!booking) {
+      const err = new Error("Booking couldnt be found");
+      err.status = 404;
+      return next(err);
+    }
+    if (booking.userId !== currUser) {
+      const err = new Error(
+        "cannot edit this booking, improper authorizations"
+      );
+      return next(err);
+    }
+
+    console.log("booking!!!!!!!!!!!!!!!!!!!!!!!", booking.spotId);
+
+    const allSpotBookings = await Booking.findAll({
+      where: { spotId: booking.spotId },
+    });
+
+    console.log(allSpotBookings);
+    let startDateTime = new Date(startDate);
+    let endDateTime = new Date(endDate);
+    startDateTime = startDateTime.getTime();
+    endDateTime = endDateTime.getTime();
+
+    let nowTime = new Date();
+    nowTime = nowTime.getTime();
+
+    allSpotBookings.forEach((ele) => {
+      ele.startDate = ele.startDate.getTime();
+      ele.endDate = ele.endDate.getTime();
+      if (startDateTime >= ele.startDate && startDateTime <= ele.endDate) {
+        const err = new Error(
+          "Sorry, this spot is already booked for the specified dates"
+        );
+        err.error = {
+          startDate: "Start date conflicts with an existing booking",
+        };
+        err.status = 403;
+        return next(err);
+      }
+      if (startDateTime < ele.startDate && endDateTime > ele.endDate) {
+        const err = new Error(
+          "Sorry, this spot is already booked for the specified dates"
+        );
+        err.error = {
+          startDate: "Booking dates surround existing booking",
+          endDate: "Booking dates surround existing booking",
+        };
+      }
+      if (endDateTime >= ele.startDate && endDateTime <= ele.endDate) {
+        const err = new Error(
+          "Sorry, this spot is already booked for the specified dates"
+        );
+        err.error = {
+          endDate: "Start date conflicts with an existing booking",
+        };
+        err.status = 403;
+        return next(err);
+      }
+    });
+
+    if (startDateTime >= endDateTime) {
+      const err = new Error("endDate cannot be on or before startDate");
+      err.status = 400;
+      return next(err);
+    }
+    booking.startDate = new Date(startDate);
+    booking.endDate = new Date(endDate);
+    booking.save();
+    let returnObj = booking.toJSON();
+    returnObj.startDate = bookingDayFormat(returnObj.startDate);
+    returnObj.endDate = bookingDayFormat(returnObj.endDate);
+    returnObj.createdAt = dateFormatting(returnObj.createdAt);
+    returnObj.updatedAt = dateFormatting(returnObj.updatedAt);
+    res.json(returnObj);
   }
-
-  if (!booking) {
-    const err = new Error("Booking couldnt be found");
-    err.status = 404;
-    return next(err);
-  }
-  if (booking.userId !== currUser) {
-    const err = new Error("cannot edit this booking, improper authorizations");
-    return next(err);
-  }
-
-  let startDateTime = new Date(startDate);
-  let endDateTime = new Date(endDate);
-  startDateTime = startDateTime.getTime();
-  endDateTime = endDateTime.getTime();
-
-  if (startDateTime >= endDateTime) {
-    const err = new Error("endDate cannot be on or before startDate");
-    err.status = 400;
-    return next(err);
-  }
-
-  const bookingStartDate = booking.startDate.getTime();
-  const bookingEndDate = booking.endDate.getTime();
-
-  if (startDateTime >= bookingStartDate && startDateTime <= bookingEndDate) {
-    const err = new Error(
-      "Sorry, this spot is already booked for the specified dates"
-    );
-    err.error = {
-      startDate: "Start date conflicts with an existing booking",
-    };
-    err.status = 403;
-    return next(err);
-  }
-
-  if (endDateTime >= bookingStartDate && endDateTime <= bookingEndDate) {
-    const err = new Error(
-      "Sorry, this spot is already booked for the specified dates"
-    );
-    err.error = {
-      endDate: "Start date conflicts with an existing booking",
-    };
-    err.status = 403;
-    return next(err);
-  }
-
-  booking.startDate = new Date(startDate);
-  booking.endDate = new Date(endDate);
-  booking.save();
-  let returnObj = booking.toJSON();
-  returnObj.startDate = bookingDayFormat(returnObj.startDate);
-  returnObj.endDate = bookingDayFormat(returnObj.endDate);
-  returnObj.createdAt = dateFormatting(returnObj.createdAt);
-  returnObj.updatedAt = dateFormatting(returnObj.updatedAt);
-  res.json(returnObj);
-});
+);
 
 /* ************************************** GET ALL CURRENT USER BOOKINGS ********************************** */
 router.get("/current", requireAuth, async (req, res, next) => {

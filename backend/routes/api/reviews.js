@@ -6,6 +6,7 @@ const {
   SpotImage,
   Review,
   ReviewImage,
+  User,
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { dateFormatting } = require("../../utils/functionality");
@@ -103,15 +104,36 @@ router.get("/current", requireAuth, async (req, res, next) => {
     where: {
       userId: req.user.id,
     },
-    include: [ReviewImage, Spot],
+    include: [ReviewImage, Spot, User],
   });
+
+  if (reviews.length === 0) {
+    return res.json("no review yet :)");
+  }
   let answerArray = [];
 
   for (let ele of reviews) {
     ele = ele.toJSON();
     ele.createdAt = dateFormatting(ele.createdAt);
     ele.updatedAt = dateFormatting(ele.updatedAt);
-    const foundSpot = await Spot.findByPk(ele.Spot.id);
+    delete ele.Spot.createdAt;
+    delete ele.Spot.updatedAt;
+    let foundSpot = await Spot.findByPk(ele.Spot.id, {
+      include: [SpotImage],
+    });
+    foundSpot = foundSpot.toJSON();
+    console.log("fo8und spot", foundSpot);
+    if (foundSpot.SpotImages.length) {
+      ele.Spot.previewImage = foundSpot.SpotImages[0].url;
+    }
+
+    if (ele.ReviewImages.length) {
+      ele.ReviewImages.forEach((ele) => {
+        ele.createdAt = dateFormatting(ele.createdAt);
+        ele.updatedAt = dateFormatting(ele.updatedAt);
+      });
+    }
+
     answerArray.push(ele);
   }
 
