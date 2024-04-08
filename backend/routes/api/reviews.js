@@ -25,12 +25,12 @@ const reviewValidator = (req, res, next) => {
   next();
 };
 
-router.use((req, res, next) => {
-  console.log(
-    "**************************************TOP OF REVIEW ROUTER **********************************  "
-  );
-  next();
-});
+// router.use((req, res, next) => {
+//   console.log(
+//     "**************************************TOP OF REVIEW ROUTER **********************************  "
+//   );
+//   next();
+// });
 
 /*******************************************  DELETE A REVIEW    ************************************************** */
 
@@ -76,7 +76,7 @@ router.put(
     }
 
     if (foundReview.userId !== req.user.id) {
-      console.log(review.userId, "USER ID", req.user.id);
+      // console.log(review.userId, "USER ID", req.user.id);
       const err = new Error("cannot edit a review you didnt make");
       err.title = "Not Authorized";
       err.status = 403;
@@ -99,7 +99,7 @@ router.put(
 /*******************************************  GET ALL REVIEWS BY CURRENT USER   ************************************************** */
 
 router.get("/current", requireAuth, async (req, res, next) => {
-  console.log("making progress");
+  // console.log("making progress");
   const reviews = await Review.findAll({
     where: {
       userId: req.user.id,
@@ -122,7 +122,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
       include: [SpotImage],
     });
     foundSpot = foundSpot.toJSON();
-    console.log("fo8und spot", foundSpot);
+    // console.log("fo8und spot", foundSpot);
     if (foundSpot.SpotImages.length) {
       ele.Spot.previewImage = foundSpot.SpotImages[0].url;
     }
@@ -159,7 +159,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  console.log(review);
+  // console.log(review);
 
   // if (review.userId !== currUser) {
   //   const err = new Error("can only edit your own reviews");

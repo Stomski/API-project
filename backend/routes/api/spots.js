@@ -35,18 +35,18 @@ const reviewValidator = (req, res, next) => {
   next();
 };
 
-router.use((req, res, next) => {
-  console.log(
-    "**************************this is the top of the spots router*******************************"
-  );
-  next();
-});
+// router.use((req, res, next) => {
+//   console.log(
+//     "**************************this is the top of the spots router*******************************"
+//   );
+//   next();
+// });
 
 /***************** *   DELETE A SPOT *************************/
 
 router.delete("/:spotId", requireAuth, async (req, res, next) => {
   const spot = await Spot.findByPk(req.params.spotId);
-  console.log("spot", spot);
+  // console.log("spot", spot);
   if (!spot) {
     const err = new Error("Spot couldnt be found");
     err.status = 404;
@@ -175,7 +175,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
     const answerArray = [];
     foundBookings.forEach((ele) => {
       ele = ele.toJSON();
-      console.log(ele, "ELE<<<<<<<<<<<<<<<<<");
+      // console.log(ele, "ELE<<<<<<<<<<<<<<<<<");
       const newObj = {};
       newObj.spotId = ele.spotId;
       newObj.startDate = bookingDayFormat(ele.startDate);
@@ -198,7 +198,7 @@ router.post(
     const { startDate, endDate } = req.body;
 
     let startDateTime = new Date(startDate);
-    console.log("starrt date time before get time", startDateTime);
+    // console.log("starrt date time before get time", startDateTime);
     let endDateTime = new Date(endDate);
     startDateTime = startDateTime.getTime();
     endDateTime = endDateTime.getTime();
@@ -207,7 +207,7 @@ router.post(
     nowTime = nowTime.getTime();
 
     if (startDateTime <= nowTime || endDateTime <= nowTime) {
-      console.log("THIS IS IN THE PAST< WE HAVE A SOLUTION FOR THIS");
+      // console.log("THIS IS IN THE PAST< WE HAVE A SOLUTION FOR THIS");
       const err = new Error("Bookings cannot be in the past");
       err.title = "Body validation errors";
       err.status = 400;
@@ -293,7 +293,7 @@ router.post(
     newBooking.startDate = bookingDayFormat(newBooking.startDate);
     newBooking.endDate = bookingDayFormat(newBooking.endDate);
 
-    console.log("TAPPING IN TO THE BOOKINGS");
+    // console.log("TAPPING IN TO THE BOOKINGS");
 
     res.json(newBooking);
   }
@@ -313,9 +313,9 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
   if (!currSpots.length) {
     const err = new Error("no spots owned by current user");
-    console.log(
-      "searching for thhis 1d!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    );
+    // console.log(
+    //   "searching for thhis 1d!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    // );
     return next(err);
   }
 
@@ -354,7 +354,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
     } else {
       ele.previewImage = null;
     }
-    console.log("updated at>>>>>>>>>>", ele.updatedat);
+    // console.log("updated at>>>>>>>>>>", ele.updatedat);
     ele.createdAt = dateFormatting(ele.createdAt);
     ele.updatedAt = dateFormatting(ele.updatedAt);
 
@@ -376,7 +376,7 @@ router.post(
   requireAuth,
   reviewValidator,
   async (req, res, next) => {
-    console.log("crushing");
+    // console.log("crushing");
 
     const spot = await Spot.findByPk(req.params.spotId);
 
@@ -419,14 +419,14 @@ router.post(
 
 router.get("/:spotId", requireAuth, async (req, res, next) => {
   const { spotId } = req.params;
-  console.log("top of get spotId. params >>>>", spotId);
+  // console.log("top of get spotId. params >>>>", spotId);
 
   let spot = await Spot.findByPk(spotId, {
     include: ["SpotImages", "Reviews", "User"],
   });
 
   if (spot === null) {
-    console.log("spot not foiund by id");
+    // console.log("spot not foiund by id");
     const err = new Error("Spot couldn't be found");
     err.title = "Invalid spot ID";
     err.status = 404;
@@ -440,10 +440,10 @@ router.get("/:spotId", requireAuth, async (req, res, next) => {
   );
   spot = spot.toJSON();
   if (spot.Reviews.length) {
-    console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
+    // console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
     let sum = 0;
     spot.Reviews.forEach((ele) => {
-      console.log(ele, "ele");
+      // console.log(ele, "ele");
       sum += ele.stars;
     });
     spot.numReviews = spot.Reviews.length;
@@ -454,7 +454,7 @@ router.get("/:spotId", requireAuth, async (req, res, next) => {
 
   if (spot.SpotImages.length) {
     spot.SpotImages.forEach((ele) => {
-      console.log("this is a test", ele, "test complete");
+      // console.log("this is a test", ele, "test complete");
       ele.createdAt = dateFormatting(ele.createdAt);
       ele.updatedAt = dateFormatting(ele.updatedAt);
     });
@@ -515,7 +515,7 @@ router.get(
   async (req, res, next) => {
     let { page, size, minLat, minLng, maxLat, maxLng, minPrice, maxPrice } =
       req.query;
-    console.log("SO QWERE LOOKINMG  GGL   FOR PARAMSSSSSS");
+    // console.log("SO QWERE LOOKINMG  GGL   FOR PARAMSSSSSS");
     page = parseInt(page) || 1;
     size = parseInt(size) || 20;
 
@@ -624,10 +624,10 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
 
   req.body.spotId = currUser;
   let newIMage = await SpotImage.create(req.body);
-  console.log(
-    newIMage.toJSON(),
-    "IM LOOKING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  );
+  // console.log(
+  //   newIMage.toJSON(),
+  //   "IM LOOKING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  // );
 
   newIMage = newIMage.toJSON();
 
