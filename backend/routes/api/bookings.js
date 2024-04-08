@@ -83,7 +83,10 @@ router.put(
       where: { spotId: booking.spotId },
     });
 
-    // console.log(allSpotBookings);
+    console.log(
+      allSpotBookings,
+      "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< all spot bookings"
+    );
     let startDateTime = new Date(startDate);
     let endDateTime = new Date(endDate);
     startDateTime = startDateTime.getTime();
@@ -92,45 +95,58 @@ router.put(
     let nowTime = new Date();
     nowTime = nowTime.getTime();
 
-    allSpotBookings.forEach((ele) => {
-      ele.startDate = ele.startDate.getTime();
-      ele.endDate = ele.endDate.getTime();
-      if (startDateTime >= ele.startDate && startDateTime <= ele.endDate) {
-        const err = new Error(
-          "Sorry, this spot is already booked for the specified dates"
-        );
-        err.error = {
-          startDate: "Start date conflicts with an existing booking",
-        };
-        err.status = 403;
-        return next(err);
-      }
-      if (startDateTime < ele.startDate && endDateTime > ele.endDate) {
-        const err = new Error(
-          "Sorry, this spot is already booked for the specified dates"
-        );
-        err.error = {
-          startDate: "Booking dates surround existing booking",
-          endDate: "Booking dates surround existing booking",
-        };
-      }
-      if (endDateTime >= ele.startDate && endDateTime <= ele.endDate) {
-        const err = new Error(
-          "Sorry, this spot is already booked for the specified dates"
-        );
-        err.error = {
-          endDate: "Start date conflicts with an existing booking",
-        };
-        err.status = 403;
-        return next(err);
-      }
-    });
-
     if (startDateTime >= endDateTime) {
       const err = new Error("endDate cannot be on or before startDate");
       err.status = 400;
       return next(err);
     }
+
+    allSpotBookings.forEach((ele) => {
+      ele = ele.toJSON();
+      ele.startDate = ele.startDate.getTime();
+      ele.endDate = ele.endDate.getTime();
+
+      console.log("ele.id", ele.id);
+      console.log(parseInt(req.params.bookingId), "PARAMS");
+
+      if (ele.id !== parseInt(req.params.bookingId)) {
+        if (startDateTime >= ele.startDate && startDateTime <= ele.endDate) {
+          const err = new Error(
+            "Sorry, this spot is already booked for the specified dates"
+          );
+          err.error = {
+            startDate: "Start date conflicts with an existing booking",
+          };
+          err.status = 403;
+          return next(err);
+        }
+        if (startDateTime < ele.startDate && endDateTime > ele.endDate) {
+          const err = new Error(
+            "Sorry, this spot is already booked for the specified dates"
+          );
+          err.error = {
+            startDate: "Booking dates surround existing booking",
+            endDate: "Booking dates surround existing booking",
+          };
+          return next(err);
+        }
+        if (endDateTime >= ele.startDate && endDateTime <= ele.endDate) {
+          const err = new Error(
+            "Sorry, this spot is already booked for the specified dates"
+          );
+          err.error = {
+            endDate: "Start date conflicts with an existing booking",
+          };
+          err.status = 403;
+          return next(err);
+        }
+      } else {
+        console.log(
+          "this is hit when the booking is comparing itself to itself"
+        );
+      }
+    });
+
     booking.startDate = new Date(startDate);
     booking.endDate = new Date(endDate);
     booking.save();
