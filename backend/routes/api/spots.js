@@ -226,6 +226,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
 
   if (!spot) {
     const err = new Error("Spot couldnt be found");
+    err.title = "Invalid Id";
     err.status = 404;
     return next(err);
   }
@@ -244,8 +245,9 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
       console.log(ele, "ELE<<<<<<<<<<<<<<<<<");
       const newObj = {};
       newObj.spotId = ele.spotId;
-      newObj.startDate = ele.startDate;
-      newObj.endDate = ele.endDate;
+      newObj.startDate = dateFormatting(ele.startDate);
+      newObj.endDate = dateFormatting(ele.endDate);
+
       answerArray.push(newObj);
     });
 

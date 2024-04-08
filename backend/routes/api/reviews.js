@@ -77,7 +77,8 @@ router.put(
     if (foundReview.userId !== req.user.id) {
       console.log(review.userId, "USER ID", req.user.id);
       const err = new Error("cannot edit a review you didnt make");
-      err.status = 404;
+      err.title = "Not Authorized";
+      err.status = 403;
       return next(err);
     }
 

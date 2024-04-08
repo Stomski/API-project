@@ -5,7 +5,7 @@ const dateFormatting = (date) => {
   // console.log(newDate.getMonth() + 1);
   const month = newDate.getMonth() + 1;
   const year = newDate.getFullYear();
-  const day = newDate.getDay();
+  const day = newDate.getDate();
   const hours = newDate.getHours();
   const minutes = newDate.getMinutes();
   const seconds = newDate.getSeconds();
