@@ -11,12 +11,12 @@ const {
 } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 
-router.use((req, res, next) => {
-  console.log(
-    "*************************  this is the top of the SPOT IMAGES router  *******************************"
-  );
-  next();
-});
+// router.use((req, res, next) => {
+//   console.log(
+//     "*************************  this is the top of the SPOT IMAGES router  *******************************"
+//   );
+//   next();
+// });
 
 /***************** *   DELETE A SPOT IMAGE   *************************/
 

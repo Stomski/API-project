@@ -17,12 +17,12 @@ const {
   spotValidator,
 } = require("../../utils/functionality");
 
-router.use((req, res, next) => {
-  console.log(
-    "**************************************TOP OF BOOKINGS ROUTER ********************************** for real though "
-  );
-  next();
-});
+// router.use((req, res, next) => {
+//   // console.log(
+//   //   "**************************************TOP OF BOOKINGS ROUTER ********************************** for real though "
+//   // );
+//   next();
+// });
 
 /* ************************************** DELETE A BOOKING  ********************************** */
 
@@ -71,18 +71,19 @@ router.put(
     }
     if (booking.userId !== currUser) {
       const err = new Error(
-        "cannot edit this booking, improper authorizations"
+        " cannot edit this booking, improper authorizations"
       );
+      err.status = 403;
       return next(err);
     }
 
-    console.log("booking!!!!!!!!!!!!!!!!!!!!!!!", booking.spotId);
+    // console.log("booking!!!!!!!!!!!!!!!!!!!!!!!", booking.spotId);
 
     const allSpotBookings = await Booking.findAll({
       where: { spotId: booking.spotId },
     });
 
-    console.log(allSpotBookings);
+    // console.log(allSpotBookings);
     let startDateTime = new Date(startDate);
     let endDateTime = new Date(endDate);
     startDateTime = startDateTime.getTime();
@@ -159,7 +160,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
   let answerArray = [];
   for (let ele of bookings) {
     ele = ele.toJSON();
-    console.log("ele", ele, "ELE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // console.log("ele", ele, "ELE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     ele.createdAt = dateFormatting(ele.createdAt);
     ele.updatedAt = dateFormatting(ele.updatedAt);
     ele.startDate = bookingDayFormat(ele.startDate);
@@ -167,7 +168,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
     let spotfound = await Spot.findByPk(ele.Spot.id, {
       include: [SpotImage],
     });
-    console.log("spot found", spotfound);
+    // console.log("spot found", spotfound);
     spotfound = spotfound.toJSON();
     if (spotfound.SpotImages.length) {
       ele.previewImage = spotfound.SpotImages[0].url;

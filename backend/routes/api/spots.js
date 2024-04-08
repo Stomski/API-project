@@ -202,7 +202,7 @@ router.post(
     startDateTime = startDateTime.getTime();
     endDateTime = endDateTime.getTime();
     let nowTime = new Date();
-    console.log(nowTime, "NOWTIMEEEEEEE");
+    // console.log(nowTime, "NOWTIMEEEEEEE");
     nowTime = nowTime.getTime();
 
     if (startDateTime <= nowTime || endDateTime <= nowTime) {
@@ -318,7 +318,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
     return next(err);
   }
 
-  console.log(currSpots, "<<<<<<<<<<<<<<<<<<<< CURR SPOTS");
+  // console.log(currSpots, "<<<<<<<<<<<<<<<<<<<< CURR SPOTS");
 
   let spotArray = [];
 
@@ -568,10 +568,10 @@ router.get(
         //avg review
 
         if (ele.Reviews.length) {
-          console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
+          // console.log("this review array exists!!!!!!!!!!!!!!!!!!!!!");
           let sum = 0;
           ele.Reviews.forEach((ele) => {
-            console.log(ele.stars);
+            // console.log(ele.stars);
             sum += ele.stars;
           });
 
