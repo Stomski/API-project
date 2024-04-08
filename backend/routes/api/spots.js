@@ -19,7 +19,6 @@ const {
   spotValidator,
 } = require("../../utils/functionality");
 const { handleValidationErrors } = require("../../utils/validation");
-const { errorMonitor } = require("mocha/lib/runner");
 
 const reviewValidator = (req, res, next) => {
   let { review, stars } = req.body;
