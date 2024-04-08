@@ -21,15 +21,18 @@ const { requireAuth } = require("../../utils/auth");
 /***************** *   DELETE A SPOT IMAGE   *************************/
 
 router.delete("/:imageId", requireAuth, async (req, res, next) => {
-  const image = await SpotImage.findByPk(req.params.imageId);
-
+  console.log("ITS ON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  let image = await SpotImage.findByPk(req.params.imageId, {
+    include: [Spot],
+  });
   if (!image) {
     const err = new Error("Image couldnt be found");
     err.status = 404;
     return next(err);
   }
+  workingblob = image.toJSON();
 
-  if (req.user.id !== image.userId) {
+  if (parseInt(req.user.id) !== parseInt(workingblob.Spot.ownerId)) {
     const err = new Error("cant edit spot you dont own");
     err.title = "Not Authorized";
     err.status = 403;

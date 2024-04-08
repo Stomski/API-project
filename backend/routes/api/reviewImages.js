@@ -21,7 +21,13 @@ router.use((req, res, next) => {
 /***************** *   DELETE A REVIEW IMAGE   *************************/
 
 router.delete("/:imageId", requireAuth, async (req, res, next) => {
-  const image = await ReviewImage.findByPk(req.params.imageId);
+  const image = await ReviewImage.findByPk(req.params.imageId, {
+    include: [Review],
+  });
+  // console.log("MIMAGEEEEEEEE", image.toJSON());
+
+  // console.log("parseInt(req.user.id)", parseInt(req.user.id));
+  // console.log("parseInt(image.userId)", parseInt(image.userId));
 
   if (!image) {
     const err = new Error("Image couldnt be found");
@@ -30,10 +36,10 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
     return next(err);
   }
 
-  if (req.user.id !== image.userId) {
+  if (parseInt(req.user.id) !== parseInt(image.Review.userId)) {
     const err = new Error("cant edit spot you dont own");
     err.status = 403;
-    err.titla = "request Error";
+    err.title = "request Error";
     return next(err);
   }
 
