@@ -33,6 +33,7 @@ const Carrot = () => (
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ModalProvider>
+      my
       <Provider store={store}>
         <App />
         {<Carrot />}
