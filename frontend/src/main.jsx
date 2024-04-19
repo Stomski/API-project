@@ -20,7 +20,10 @@ if (import.meta.env.MODE !== "production") {
 
 const Carrot = () => (
   <div style={{ color: "orange", fontSize: "100px" }}>
-    <i className="fas fa-carrot"></i>
+    <img
+      src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1713558531/123photo-86634_xf73wh.jpg"
+      alt=""
+    />
   </div>
 );
 
