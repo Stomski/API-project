@@ -18,14 +18,14 @@ if (import.meta.env.MODE !== "production") {
   window.sessionActions = sessionActions;
 }
 
-const Carrot = () => (
-  <div style={{ color: "orange", fontSize: "100px" }}>
-    <img
-      src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1713558531/123photo-86634_xf73wh.jpg"
-      alt=""
-    />
-  </div>
-);
+// const Carrot = () => (
+//   <div style={{ color: "orange", fontSize: "100px" }}>
+//     <img
+//       src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1713558531/123photo-86634_xf73wh.jpg"
+//       alt=""
+//     />
+//   </div>
+// );
 
 // Wrap the application with the Modal provider and render the Modal component
 // after the App component so that all the Modal content will be layered as
@@ -33,10 +33,9 @@ const Carrot = () => (
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ModalProvider>
-      my
       <Provider store={store}>
         <App />
-        {<Carrot />}
+        {/* {<Carrot />} */}
         {<Modal />}
       </Provider>
     </ModalProvider>

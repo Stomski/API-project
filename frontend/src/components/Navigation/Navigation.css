@@ -5,3 +5,9 @@
 .hidden {
   display: none;
 }
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none; /* Remove default bullet points */
+}
