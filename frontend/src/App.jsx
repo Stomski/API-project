@@ -29,7 +29,7 @@ function Layout() {
 
 const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: <Layout className="navbar" />,
     children: [
       {
         path: "/",
