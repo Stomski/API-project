@@ -34,9 +34,10 @@ function Navigation({ isLoaded, className }) {
 
   return (
     <ul className={className}>
-      <li>
-        <NavLink to="/">Home</NavLink>
-        <p>this is ia test</p>
+      <li className="homebutton">
+        <NavLink to="/" id="homebutton">
+          Home
+        </NavLink>
       </li>
       {isLoaded && sessionLinks}
     </ul>

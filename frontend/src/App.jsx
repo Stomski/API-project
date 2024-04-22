@@ -19,11 +19,14 @@ function Layout() {
   }, [dispatch]);
 
   return (
-    <>
-      <Modal />
-      <Navigation isLoaded={isLoaded} className="navbar" />
-      {isLoaded && <Outlet />}
-    </>
+    <div className="navflex">
+      <div></div>
+      <div className="navbuttons">
+        <Modal />
+        <Navigation isLoaded={isLoaded} className="navbar" />
+        {isLoaded && <Outlet />}
+      </div>
+    </div>
   );
 }
 
