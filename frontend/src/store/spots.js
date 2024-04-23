@@ -21,11 +21,11 @@ export const fetchSpots = (spotId) => async (dispatch) => {
   } else {
     const res = await fetch(`/api/spots/${spotId}`);
     const spot = await res.json();
-    console.log(
-      "%c spot id given to the fetch spots func, else triggered, this is the spot from fetch>",
-      "color:blue; font-size: 26px",
-      spot
-    );
+    // console.log(
+    //   "%c spot id given to the fetch spots func, else triggered, this is the spot from fetch>",
+    //   "color:blue; font-size: 26px",
+    //   spot
+    // );
     dispatch(loadOne(spot));
     return res;
   }
@@ -36,21 +36,21 @@ const spotsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_ONE: {
       newState = { ...state };
-      console.log(
-        "%c LOAD ONE CALLED, action.spot>",
-        "color:green; font-size: 26px",
-        action
-      );
+      // console.log(
+      //   "%c LOAD ONE CALLED, action.spot>",
+      //   "color:green; font-size: 26px",
+      //   action
+      // );
       newState[action.payload.id] = action.payload;
 
       return newState;
     }
     case LOAD_SPOTS: {
-      console.log(
-        "%c LOAD_SPOTS called, action log>",
-        "color:blue; font-size: 26px",
-        action
-      );
+      // console.log(
+      //   "%c LOAD_SPOTS called, action log>",
+      //   "color:blue; font-size: 26px",
+      //   action
+      // );
       newState = { ...state };
       action.payload.Spots.forEach((spot) => {
         newState[spot.id] = spot;
