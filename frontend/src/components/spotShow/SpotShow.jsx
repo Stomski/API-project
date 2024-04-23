@@ -26,8 +26,16 @@ function SpotShow() {
     <div className="spotshow">
       {isLoaded && spot && (
         <>
-          <h1>testing the new div render</h1>
-          <h3>FUCK YES</h3>
+          <h1>{spot.name}</h1>
+          {spot.SpotImages.length > 0 && (
+            <img
+              className="preview-img"
+              src={`${spot.SpotImages[0].url}`}
+              alt="Spot Preview"
+            />
+          )}
+
+          <h3>Price: {`${spot.price}`} </h3>
         </>
       )}
     </div>
