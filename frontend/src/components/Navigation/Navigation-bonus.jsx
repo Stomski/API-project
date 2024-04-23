@@ -21,8 +21,8 @@ function Navigation({ isLoaded }) {
         </NavLink>
       </div>
 
-      <ul className="navbar">
-        <li>
+      <ul className="navlinksdiv">
+        <li id="homebutton">
           <NavLink to="/">Home</NavLink>
         </li>
         {isLoaded && (

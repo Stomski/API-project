@@ -6,9 +6,9 @@
   display: none;
 }
 
-.navbar {
+.navlinksdiv {
   display: flex;
-  justify-content: flex-end;
+  justify-content: right;
   list-style-type: none; /* Remove default bullet points */
 }
 #homebutton {
@@ -20,8 +20,12 @@
 }
 .headbar {
   display: flex;
+  justify-content: space-between;
 }
 logodiv {
   display: flex;
   justify-content: left;
+}
+#homebutton {
+  padding-right: 15px;
 }
