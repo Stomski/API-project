@@ -44,10 +44,12 @@ const seedArray = [
     url: "https://images.pexels.com/photos/2294476/pexels-photo-2294476.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   },
   {
-    spotId: 1,
+    spotId: 10,
     url: "https://images.pexels.com/photos/1280/pexels-photo-1280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   },
 ];
+
+//above i modified the image seeder for spot Id 10, it used to be 1
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

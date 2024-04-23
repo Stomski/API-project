@@ -14,3 +14,15 @@
 #homebutton {
   padding-right: 100px;
 }
+
+#faviconlogo {
+  height: 40px;
+}
+.headbar {
+  display: flex;
+  justify-content: center;
+}
+.logodiv {
+  display: flex;
+  justify-content: right;
+}
