@@ -20,9 +20,8 @@
 }
 .headbar {
   display: flex;
-  justify-content: center;
 }
-.logodiv {
+logodiv {
   display: flex;
-  justify-content: right;
+  justify-content: left;
 }
