@@ -10,11 +10,13 @@ export const fetchSpots = (spotId) => async (dispatch) => {
     const res = await fetch("/api/spots");
     const spots = await res.json();
     dispatch(loadSpots(spots));
+
     return res;
   } else {
     const res = await fetch(`/api/spots/${spotId}`);
     const spot = await res.json();
-    dispatch(loadSpotById(spot));
+    console.log("%c spot log>", "color:blue; font-size: 26px", spot);
+    // dispatch(loadSpotById(spot));
     return res;
   }
 };
@@ -22,6 +24,11 @@ export const fetchSpots = (spotId) => async (dispatch) => {
 const spotsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_SPOTS: {
+      console.log(
+        "%c LOAD_SPOTS called, action log>",
+        "color:blue; font-size: 26px",
+        action
+      );
       const newState = { ...state };
       action.payload.Spots.forEach((spot) => {
         newState[spot.id] = spot;
