@@ -10,12 +10,15 @@ function Navigation({ isLoaded }) {
   return (
     <div className="headbar">
       <div id="logodiv">
-        <img
-          id="faviconlogo"
-          src={favicon}
-          alt="Website Favicon"
-          className="favicon"
-        />
+        <NavLink to="/">
+          {" "}
+          <img
+            id="faviconlogo"
+            src={favicon}
+            alt="Website Favicon"
+            className="favicon"
+          />
+        </NavLink>
       </div>
 
       <ul className="navbar">
