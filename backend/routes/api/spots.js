@@ -416,7 +416,7 @@ router.post(
 
 /***************** *    SPOT DETAILS BY ID    *************************/
 
-router.get("/:spotId", requireAuth, async (req, res, next) => {
+router.get("/:spotId", async (req, res, next) => {
   const { spotId } = req.params;
   // console.log("top of get spotId. params >>>>", spotId);
 
