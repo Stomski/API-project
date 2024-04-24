@@ -34,3 +34,22 @@ logodiv {
 #homebutton {
   padding-right: 15px;
 }
+.modal-container {
+  max-width: 80%;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: white;
+  z-index: 1000;
+}
+.submit-button-Div {
+  display: flex;
+  justify-content: center;
+}

@@ -1,10 +1,9 @@
 /* Modal container styles */
-.modal-container {
-  display: flex;
-  justify-content: center; /* Horizontally center the modal */
-  align-items: center; /* Vertically center the modal */
-  height: 100vh; /* Take the full viewport height */
-  padding: 20px; /* Add some padding around the modal */
+.login-modal-container {
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  padding: 20px;
 }
 
 /* Form styles */
