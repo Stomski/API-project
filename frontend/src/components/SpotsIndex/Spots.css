@@ -1,3 +1,18 @@
 .preview-img {
   height: 300px;
 }
+#spots-box {
+  width: 100%; /* Make the div full width */
+  border: 2px solid black; /* Adds a black border */
+  border-radius: 10px; /* Adds rounded corners */
+  padding: 20px; /* Optional: Adds some padding inside the box */
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow flex items to wrap */
+  justify-content: space-around; /* Horizontally distribute items */
+}
+
+#spots-indv {
+  border: 2px solid black; /* Adds a black border */
+  border-radius: 10px; /* Adds rounded corners */
+  padding: 20px; /* Optional: Adds some padding inside the box */
+}

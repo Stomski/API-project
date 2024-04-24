@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchSpots } from "../../store/spots";
 import { useEffect, useState } from "react";
-import { loadReviews, reviewFetch } from "../../store/reviews";
+import { reviewFetch } from "../../store/reviews";
 
 function SpotShow() {
   const dispatch = useDispatch();
