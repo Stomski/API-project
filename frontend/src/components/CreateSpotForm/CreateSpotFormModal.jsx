@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import * as sessionActions from "../../store/session";
+
 import { useParams } from "react-router-dom";
 import { fetchSpots } from "../../store/spots";
+import { spotCreateThunk } from "../../store/spots";
 //import CSS
 
 function CreateSpotModal() {
@@ -41,9 +42,26 @@ function CreateSpotModal() {
     });
   }, [dispatch, spotId]);
 
-  const handleSubmit = (e) => {
-    //example from signupformModal.jsx
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const spotData = {
+      country,
+      address,
+      city,
+      state,
+      description,
+      name,
+      lat: 0,
+      lng: 0,
+      price: parseInt(price),
+    };
+    setErrors({});
+
+    const thunkReply = await dispatch(spotCreateThunk(spotData));
+
+    console.log("%c thunkReply log>", "color:red; font-size: 26px", thunkReply);
+    //example from signupformModal.jsx
     // if (password === confirmPassword) {
     //   setErrors({});
     //   return dispatch(

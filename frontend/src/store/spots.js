@@ -1,5 +1,14 @@
+import { csrfFetch } from "./csrf";
+import Cookies from "js-cookie";
+
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const LOAD_ONE = "spots/LOAD_ONE";
+const CREATE_SPOT = "spots/CREATE_SPOT";
+
+export const createSpot = (spotData) => ({
+  type: CREATE_SPOT,
+  spotData,
+});
 
 export const loadSpots = (spots) => ({
   type: LOAD_SPOTS,
@@ -10,6 +19,29 @@ export const loadOne = (spot) => ({
   type: LOAD_ONE,
   payload: spot,
 });
+
+export const spotCreateThunk = (spotData) => async (dispatch) => {
+  console.log(
+    "%c JSON.stringify(spotData) log>",
+    "color:blue; font-size: 26px",
+    JSON.stringify(spotData)
+  );
+  try {
+    console.log(
+      "%c this is the startt of the try in my spot create thunk",
+      "color:green; font-size: 26px"
+    );
+    console.log("XSRF-Token:", Cookies.get("XSRF-TOKEN"));
+    const response = await csrfFetch("/api/spots", {
+      method: "POST",
+      body: JSON.stringify(spotData),
+    });
+    console.log("%c response log>", "color:red; font-size: 26px", response);
+  } catch (e) {
+    console.log("%c e log>", "color:blue; font-size: 26px", e);
+    return e;
+  }
+};
 
 export const fetchSpots = (spotId) => async (dispatch) => {
   if (!spotId) {
