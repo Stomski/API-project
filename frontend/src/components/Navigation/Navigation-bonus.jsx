@@ -20,6 +20,9 @@ function Navigation({ isLoaded }) {
           />
         </NavLink>
       </div>
+      <div className="create-spot-link">
+        {sessionUser && <NavLink to={"/"}>Create a Spot</NavLink>}
+      </div>
 
       <ul className="navlinksdiv">
         <li id="homebutton">

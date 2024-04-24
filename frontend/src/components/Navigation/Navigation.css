@@ -14,6 +14,11 @@
 #homebutton {
   padding-right: 100px;
 }
+.create-spot-link {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
 
 #faviconlogo {
   height: 40px;

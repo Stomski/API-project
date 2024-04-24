@@ -10,12 +10,19 @@ function SpotShow() {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots[spotId]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const reviews = useSelector((state) => state.reviews);
+
   //   console.log(
   //     "%c spots in Spot show jxs>",
   //     "color:blue; font-size: 26px",
   //     spot
   //   );
   //   console.log("%c spotId log>", "color:red; font-size: 26px", spotId);
+  console.log(
+    "%c Object.values(reviews)",
+    "color:blue; font-size: 26px",
+    Object.values(reviews)
+  );
 
   useEffect(() => {
     dispatch(fetchSpots(spotId)).then(() => {
@@ -38,6 +45,18 @@ function SpotShow() {
           )}
 
           <h3>Price: {`${spot.price}`} </h3>
+          <h2>REVIEWS</h2>
+
+          {Object.values(reviews).length && (
+            <div>
+              {Object.values(reviews).map((review, index) => (
+                <div key="index">
+                  <p></p>
+                  <p>{review.review}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>

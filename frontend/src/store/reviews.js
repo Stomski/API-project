@@ -20,22 +20,23 @@ function reviewReducer(state = {}, action) {
   let newState;
   switch (action.type) {
     case LOAD_REVIEWS:
-      newState = { ...state, reviews: {} };
+      newState = {};
 
-      console.log(
-        "%c action.payload.reviews log>",
-        "color:blue; font-size: 26px",
-        action.payload.Reviews
-      );
-      console.log(
-        "%c LOAD_REVIEWS called in reviewReducer, good work dev>",
-        "color:blue; font-size: 26px",
-        state
-      );
+      // console.log(
+      //   "%c action.payload.reviews log>",
+      //   "color:blue; font-size: 26px",
+      //   action.payload.Reviews
+      // );
+      // console.log(
+      //   "%c LOAD_REVIEWS called in reviewReducer, good work dev>",
+      //   "color:blue; font-size: 26px",
+      //   state
+      // );
       action.payload.Reviews.forEach((review) => {
         newState[review.id] = review;
       });
 
+      // console.log("%c newState log>", "color:blue; font-size: 26px", newState);
       return newState;
     default:
       return state;
