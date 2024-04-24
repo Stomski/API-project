@@ -48,8 +48,8 @@ function CreateSpotModal() {
 
   return (
     <>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <h1>Create A Spot!</h1>
+      {/* <form onSubmit={handleSubmit}>
         <label>
           Email
           <input
@@ -111,7 +111,9 @@ function CreateSpotModal() {
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
         <button type="submit">Sign Up</button>
-      </form>
+      </form>*/}
     </>
   );
 }
+
+export default CreateSpotModal;

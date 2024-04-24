@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton-bonus";
 import "./Navigation.css";
 import favicon from "../../../src/favicon.ico";
+import OpenModalButton from "../OpenModalButton";
+import CreateSpotModal from "../CreateSpotForm";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -21,7 +23,12 @@ function Navigation({ isLoaded }) {
         </NavLink>
       </div>
       <div className="create-spot-link">
-        {sessionUser && <NavLink to={"/"}>Create a Spot</NavLink>}
+        {sessionUser && (
+          <OpenModalButton
+            buttonText="Create a Spot"
+            modalComponent={<CreateSpotModal />}
+          />
+        )}
       </div>
 
       <ul className="navlinksdiv">
