@@ -32,9 +32,11 @@ function reviewReducer(state = {}, action) {
       //   "color:blue; font-size: 26px",
       //   state
       // );
-      action.payload.Reviews.forEach((review) => {
-        newState[review.id] = review;
-      });
+      if (action.payload.Reviews) {
+        action.payload.Reviews.forEach((review) => {
+          newState[review.id] = review;
+        });
+      }
 
       // console.log("%c newState log>", "color:blue; font-size: 26px", newState);
       return newState;

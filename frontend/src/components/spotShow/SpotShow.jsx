@@ -47,7 +47,7 @@ function SpotShow() {
           <h3>Price: {`${spot.price}`} </h3>
           <h2>REVIEWS</h2>
 
-          {Object.values(reviews).length && (
+          {Object.values(reviews).length > 0 && (
             <div>
               {Object.values(reviews).map((review, index) => (
                 <div key={index}>
