@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  Outlet,
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 // import LoginFormPage from "./components/LoginFormPage";
 // import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation/Navigation-bonus";
@@ -12,7 +17,7 @@ import SpotShow from "./components/spotShow";
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => {
       setIsLoaded(true);
@@ -24,8 +29,12 @@ function Layout() {
       <div></div>
       <div className="navbuttons">
         <Modal />
-        <Navigation isLoaded={isLoaded} className="navbar" />
-        {isLoaded && <Outlet />}
+        <Navigation
+          isLoaded={isLoaded}
+          className="navbar"
+          navigate={navigate}
+        />
+        {isLoaded && <Outlet navigate={navigate} />}
       </div>
     </div>
   );

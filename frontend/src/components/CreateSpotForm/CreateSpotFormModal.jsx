@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchSpots } from "../../store/spots";
 import { spotCreateThunk } from "../../store/spots";
 //import CSS
 
-function CreateSpotModal() {
+function CreateSpotModal({ navigate }) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -24,7 +24,12 @@ function CreateSpotModal() {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots.spotById);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  console.log(
+    "%c navigate at top of spot form modal>",
+    "color:orange; font-size: 26px",
+    navigate
+  );
 
   //   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
@@ -87,6 +92,12 @@ function CreateSpotModal() {
     //   confirmPassword:
     //     "Confirm Password field must be the same as the Password field",
     // });
+
+    console.log(
+      "%c navigate  is a func! log>",
+      "color:red; font-size: 26px",
+      navigate
+    );
 
     navigate(`/spots/${thunkReply.id}`);
   };

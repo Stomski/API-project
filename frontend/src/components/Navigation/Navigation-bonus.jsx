@@ -6,7 +6,12 @@ import favicon from "../../../src/favicon.ico";
 import OpenModalButton from "../OpenModalButton";
 import CreateSpotModal from "../CreateSpotForm";
 
-function Navigation({ isLoaded }) {
+function Navigation({ isLoaded, navigate }) {
+  console.log(
+    "%c navigate in navigationjsxlog>",
+    "color:blue; font-size: 26px",
+    navigate
+  );
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
@@ -25,8 +30,9 @@ function Navigation({ isLoaded }) {
       <div className="create-spot-link">
         {sessionUser && (
           <OpenModalButton
+            navigate={navigate}
             buttonText="Create a Spot"
-            modalComponent={<CreateSpotModal />}
+            modalComponent={<CreateSpotModal navigate={navigate} />}
           />
         )}
       </div>
