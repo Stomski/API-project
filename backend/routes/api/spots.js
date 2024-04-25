@@ -127,11 +127,9 @@ router.get("/:spotId/reviews", async (req, res, next) => {
   if (reviews.length === 0) return res.json([]);
   const answerArray = [];
   reviews.forEach((ele) => {
-    // console.log(ele, "ELEEEEEEEEEEEEEEEEEEEEEEEEEEE");
     ele = ele.toJSON();
-    // console.log(ele, "22222222222222ELEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+
     ele.createdAt = dateFormatting(ele.createdAt);
-    // console.log(ele);
     ele.updatedAt = dateFormatting(ele.updatedAt);
     if (ele.ReviewImages.length) {
       ele.ReviewImages.forEach((ele) => {
