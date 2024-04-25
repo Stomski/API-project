@@ -12,11 +12,11 @@ function SpotShow() {
   const [isLoaded, setIsLoaded] = useState(false);
   const reviews = useSelector((state) => state.reviews);
 
-  //   console.log(
-  //     "%c spots in Spot show jxs>",
-  //     "color:blue; font-size: 26px",
-  //     spot
-  //   );
+  console.log(
+    "%c spots in Spot show jxs>",
+    "color:blue; font-size: 26px",
+    spot
+  );
   //   console.log("%c spotId log>", "color:red; font-size: 26px", spotId);
   console.log(
     "%c Object.values(reviews)",
@@ -36,6 +36,9 @@ function SpotShow() {
       {isLoaded && spot && (
         <>
           <h1>{spot.name}</h1>
+          <div className="spot-details">
+            <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
+          </div>
           {spot.SpotImages.length > 0 && (
             <img
               className="preview-img"
@@ -44,19 +47,26 @@ function SpotShow() {
             />
           )}
 
-          <h3>Price: {`${spot.price}`} </h3>
-          <h2>REVIEWS</h2>
+          <h3>
+            Hosted by: {`${spot.Owner.firstName} ${spot.Owner.lastName}`}{" "}
+          </h3>
+          <p className="spotshow-details">{`${spot.description}`}</p>
 
-          {Object.values(reviews).length > 0 && (
-            <div>
-              {Object.values(reviews).map((review, index) => (
-                <div key={index}>
-                  <p></p>
-                  <p>{review.review}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="reviews-div">
+            <h2>REVIEWS</h2>
+
+            {Object.values(reviews).length > 0 && (
+              <div>
+                {Object.values(reviews).map((review, index) => (
+                  <div key={index}>
+                    <p></p>
+                    <p>{review.review}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            <button>new review</button>
+          </div>
         </>
       )}
     </div>
