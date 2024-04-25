@@ -100,6 +100,7 @@ function CreateSpotModal({ navigate }) {
     );
 
     navigate(`/spots/${thunkReply.id}`);
+    //WORKING AS OF THURSDAY AT 11 AM
   };
 
   return (
