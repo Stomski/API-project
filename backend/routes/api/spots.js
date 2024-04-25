@@ -124,7 +124,7 @@ router.get("/:spotId/reviews", async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  if (reviews.length === 0) res.json([]);
+  if (reviews.length === 0) return res.json([]);
   const answerArray = [];
   reviews.forEach((ele) => {
     // console.log(ele, "ELEEEEEEEEEEEEEEEEEEEEEEEEEEE");

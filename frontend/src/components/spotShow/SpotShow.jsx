@@ -33,7 +33,7 @@ function SpotShow() {
 
   return (
     <div className="spotshow">
-      {isLoaded && spot && (
+      {isLoaded && spot && !spot.errors ? (
         <>
           <h1>{spot.name}</h1>
           <div className="spot-details">
@@ -68,6 +68,8 @@ function SpotShow() {
             <button>new review</button>
           </div>
         </>
+      ) : (
+        <h1>couldnt load spot</h1>
       )}
     </div>
   );

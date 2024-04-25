@@ -60,6 +60,10 @@ const router = createBrowserRouter([
         path: "/spots/:spotId",
         element: <SpotShow />,
       },
+      {
+        path: "*",
+        element: <h1>Sorry, Page Not Found</h1>,
+      },
     ],
   },
 ]);
