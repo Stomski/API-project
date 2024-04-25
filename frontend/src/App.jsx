@@ -13,11 +13,12 @@ import * as sessionActions from "./store/session";
 import { Modal } from "./context/Modal";
 import Spots from "./components/SpotsIndex/Spots";
 import SpotShow from "./components/spotShow";
-
+let x;
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
+  x = navigate;
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => {
       setIsLoaded(true);
@@ -58,7 +59,7 @@ const router = createBrowserRouter([
       // },
       {
         path: "/spots/:spotId",
-        element: <SpotShow />,
+        element: <SpotShow navigate={x} />,
       },
       {
         path: "*",

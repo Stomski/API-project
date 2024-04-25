@@ -3,14 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchSpots } from "../../store/spots";
 import { useEffect, useState } from "react";
 import { reviewFetch } from "../../store/reviews";
+import CreateReviewModal from "../CreateReviewFormModal/CreateReviewFormModal";
+import * as sessionActions from "../../store/session";
+import OpenModalButton from "../OpenModalButton";
 
-function SpotShow() {
+function SpotShow({ navigate }) {
   const dispatch = useDispatch();
 
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots[spotId]);
   const [isLoaded, setIsLoaded] = useState(false);
   const reviews = useSelector((state) => state.reviews);
+  const sessionUser = useSelector((state) => state.session.user);
 
   console.log(
     "%c spots in Spot show jxs>",
@@ -69,7 +73,16 @@ function SpotShow() {
               )}
 
             <div className="review-button-div"></div>
-            <button>new review</button>
+
+            <div className="create-review-link">
+              {sessionUser && (
+                <OpenModalButton
+                  navigate={navigate}
+                  buttonText="Create a Spot"
+                  modalComponent={<CreateReviewModal navigate={navigate} />}
+                />
+              )}
+            </div>
           </div>
         </>
       ) : (
