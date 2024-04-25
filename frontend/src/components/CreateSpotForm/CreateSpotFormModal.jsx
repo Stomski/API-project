@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchSpots } from "../../store/spots";
 import { spotCreateThunk } from "../../store/spots";
 //import CSS
@@ -24,6 +24,7 @@ function CreateSpotModal() {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots.spotById);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
@@ -86,6 +87,8 @@ function CreateSpotModal() {
     //   confirmPassword:
     //     "Confirm Password field must be the same as the Password field",
     // });
+
+    navigate(`/spots/${thunkReply.id}`);
   };
 
   return (

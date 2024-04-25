@@ -3,10 +3,10 @@ import Cookies from "js-cookie";
 
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const LOAD_ONE = "spots/LOAD_ONE";
-const CREATE_SPOT = "spots/CREATE_SPOT";
+const ADD_SPOT = "spots/ADD_SPOT";
 
-export const createSpot = (spotData) => ({
-  type: CREATE_SPOT,
+export const addSpot = (spotData) => ({
+  type: ADD_SPOT,
   spotData,
 });
 
@@ -38,6 +38,11 @@ export const spotCreateThunk = (spotData) => async (dispatch) => {
     });
     console.log("%c response log>", "color:red; font-size: 26px", response);
     console.log(dispatch, "dispatch from spots.js");
+
+    const returnObj = await response.json();
+    dispatch(addSpot(returnObj));
+
+    return returnObj;
   } catch (e) {
     console.log("%c e log>", "color:blue; font-size: 26px", e);
     return e;
@@ -67,23 +72,36 @@ export const fetchSpots = (spotId) => async (dispatch) => {
 const spotsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
+    case ADD_SPOT: {
+      console.log(
+        "%c ADD_SPOT called in spots reducer, state, actuin>",
+        "color:red; font-size: 26px",
+        state,
+        action
+      );
+      newState = { ...state };
+      newState[action.spotData.id] = action.spotData;
+
+      return newState;
+    }
+
     case LOAD_ONE: {
       newState = { ...state };
-      // console.log(
-      //   "%c LOAD ONE CALLED, action.spot>",
-      //   "color:green; font-size: 26px",
-      //   action
-      // );
+      console.log(
+        "%c LOAD ONE CALLED, action.spot>",
+        "color:green; font-size: 26px",
+        action
+      );
       newState[action.payload.id] = action.payload;
 
       return newState;
     }
     case LOAD_SPOTS: {
-      // console.log(
-      //   "%c LOAD_SPOTS called, action log>",
-      //   "color:blue; font-size: 26px",
-      //   action
-      // );
+      console.log(
+        "%c LOAD_SPOTS called, action log>",
+        "color:blue; font-size: 26px",
+        action
+      );
       newState = { ...state };
       action.payload.Spots.forEach((spot) => {
         newState[spot.id] = spot;
