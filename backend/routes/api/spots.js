@@ -643,6 +643,7 @@ router.post(
   spotValidator,
   handleValidationErrors,
   async (req, res, next) => {
+    console.log("this is a test");
     console.log("req.body", req.body);
     // console.log(
     //   "req.user>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",

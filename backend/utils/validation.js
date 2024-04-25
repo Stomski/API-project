@@ -4,6 +4,10 @@ const { validationResult } = require("express-validator");
 // middleware for formatting errors from express-validator middleware
 // (to customize, see express-validator's documentation)
 const handleValidationErrors = (req, _res, next) => {
+  console.log(
+    "%c handleValidationErrors called >",
+    "color:blue; font-size: 26px"
+  );
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {

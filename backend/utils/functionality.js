@@ -73,6 +73,7 @@ const bookingValidators = (req, res, next) => {
 };
 
 const spotValidator = (req, res, next) => {
+  console.log("spotValidator valled req body", req.body);
   let { address, city, country, state, lat, lng, name, description, price } =
     req.body;
 
@@ -81,8 +82,8 @@ const spotValidator = (req, res, next) => {
     !city ||
     !state ||
     !country ||
-    !lat ||
-    !lng ||
+    // !lat
+    // !lng ||
     !name ||
     !description ||
     !price ||
@@ -92,6 +93,7 @@ const spotValidator = (req, res, next) => {
     lng < -180 ||
     lng > 180
   ) {
+    console.log("validations failed");
     return res.status(400).json({
       message: "Bad Request",
       errors: {
