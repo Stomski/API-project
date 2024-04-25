@@ -52,8 +52,8 @@ function CreateSpotModal() {
       state,
       description,
       name,
-      lat: 0,
-      lng: 0,
+      lat: 1,
+      lng: 1,
       price: parseInt(price),
     };
     setErrors({});
