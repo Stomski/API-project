@@ -91,6 +91,7 @@ function CreateSpotModal({ navigate }) {
     // return setErrors({
     //   confirmPassword:
     //     "Confirm Password field must be the same as the Password field",
+    //this shit is brutal.
     // });
 
     console.log(
