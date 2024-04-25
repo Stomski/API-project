@@ -4,7 +4,7 @@ import { fetchSpots } from "../../store/spots";
 import { useEffect, useState } from "react";
 import { reviewFetch } from "../../store/reviews";
 import CreateReviewModal from "../CreateReviewFormModal/CreateReviewFormModal";
-import * as sessionActions from "../../store/session";
+// import * as sessionActions from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 
 function SpotShow({ navigate }) {
