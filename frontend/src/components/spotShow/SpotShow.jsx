@@ -55,16 +55,20 @@ function SpotShow() {
           <div className="reviews-div">
             <h2>REVIEWS</h2>
 
-            {Object.values(reviews).length > 0 && (
-              <div>
-                {Object.values(reviews).map((review, index) => (
-                  <div key={index}>
-                    <p></p>
-                    <p>{review.review}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+            {reviews &&
+              Object.values(reviews) &&
+              Object.values(reviews).length > 0 && (
+                <div>
+                  {Object.values(reviews).map((review, index) => (
+                    <div key={index}>
+                      <p></p>
+                      <p>{review.review}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+            <div className="review-button-div"></div>
             <button>new review</button>
           </div>
         </>

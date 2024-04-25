@@ -101,7 +101,7 @@ function CreateSpotModal({ navigate }) {
 
     navigate(`/spots/${thunkReply.id}`);
     //WOKING AS OF THURSDAY AT 11 AM
-    closeModal;
+    closeModal();
   };
 
   return (
