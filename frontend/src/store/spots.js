@@ -37,6 +37,7 @@ export const spotCreateThunk = (spotData) => async (dispatch) => {
       body: JSON.stringify(spotData),
     });
     console.log("%c response log>", "color:red; font-size: 26px", response);
+    console.log(dispatch, "dispatch from spots.js");
   } catch (e) {
     console.log("%c e log>", "color:blue; font-size: 26px", e);
     return e;

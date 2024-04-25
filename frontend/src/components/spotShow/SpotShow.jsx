@@ -50,7 +50,7 @@ function SpotShow() {
           {Object.values(reviews).length && (
             <div>
               {Object.values(reviews).map((review, index) => (
-                <div key="index">
+                <div key={index}>
                   <p></p>
                   <p>{review.review}</p>
                 </div>

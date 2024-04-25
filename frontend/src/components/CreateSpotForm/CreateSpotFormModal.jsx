@@ -61,6 +61,7 @@ function CreateSpotModal() {
     const thunkReply = await dispatch(spotCreateThunk(spotData));
 
     console.log("%c thunkReply log>", "color:red; font-size: 26px", thunkReply);
+    console.log(updatebool, spot, closeModal);
     //example from signupformModal.jsx
     // if (password === confirmPassword) {
     //   setErrors({});
