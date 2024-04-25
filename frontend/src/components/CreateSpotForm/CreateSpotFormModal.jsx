@@ -67,7 +67,7 @@ function CreateSpotModal({ navigate }) {
     const thunkReply = await dispatch(spotCreateThunk(spotData));
 
     console.log("%c thunkReply log>", "color:red; font-size: 26px", thunkReply);
-    console.log(updatebool, spot, closeModal);
+    console.log(updatebool, spot);
     //example from signupformModal.jsx
     // if (password === confirmPassword) {
     //   setErrors({});
@@ -100,7 +100,8 @@ function CreateSpotModal({ navigate }) {
     );
 
     navigate(`/spots/${thunkReply.id}`);
-    //WORKING AS OF THURSDAY AT 11 AM
+    //WOKING AS OF THURSDAY AT 11 AM
+    closeModal;
   };
 
   return (
