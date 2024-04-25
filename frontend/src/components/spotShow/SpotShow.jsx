@@ -78,7 +78,7 @@ function SpotShow({ navigate }) {
               {sessionUser && (
                 <OpenModalButton
                   navigate={navigate}
-                  buttonText="Create a Spot"
+                  buttonText="Create a Review!"
                   modalComponent={<CreateReviewModal navigate={navigate} />}
                 />
               )}
