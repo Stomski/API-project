@@ -97,7 +97,7 @@ function CreateSpotModal() {
           <div className="form-div">
             <h2 className="form-heading">Where&apos;s your place located?</h2>
             <p className="subtitle">
-              Guests will only get your exact address once they booked a
+              Guests will only get your exact address once they have booked a
               reservation.
             </p>
             <label className="input-label" htmlFor="country">
