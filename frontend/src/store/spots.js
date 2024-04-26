@@ -5,6 +5,12 @@ const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const LOAD_ONE = "spots/LOAD_ONE";
 const ADD_SPOT = "spots/ADD_SPOT";
 const GET_USERS_SPOTS = "spots/GET_USERS_SPOTS";
+const DELETE_SPOT = "spots/DELETE_SPOTS";
+
+export const deleteSpot = (spot) => ({
+  type: DELETE_SPOT,
+  payload: spot,
+});
 
 export const getSpotsByUser = (spots) => ({
   type: GET_USERS_SPOTS,
@@ -25,6 +31,20 @@ export const loadOne = (spot) => ({
   type: LOAD_ONE,
   payload: spot,
 });
+
+export const deleteSpotThunk = (spotId) => async (dispatch) => {
+  console.log("this is the top of my delete spot thunk, good work dev", spotId);
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE",
+  });
+  const resObj = await response.json();
+
+  if (response.status === 200) {
+    dispatch(deleteSpot(spotId));
+  } else {
+    return "error";
+  }
+};
 
 export const spotsByUserThunk = () => async (dispatch) => {
   console.log(
@@ -89,6 +109,18 @@ export const fetchSpots = (spotId) => async (dispatch) => {
 const spotsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
+    case DELETE_SPOT: {
+      newState = { ...state };
+      console.log(
+        "%c action  in delete spot reducerlog>",
+        "color:red; font-size: 26px",
+        action
+      );
+
+      delete newState[action.payload];
+
+      return newState;
+    }
     case ADD_SPOT: {
       // console.log(
       //   "%c ADD_SPOT called in spots reducer, state, actuin>",

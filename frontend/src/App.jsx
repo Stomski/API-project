@@ -65,7 +65,7 @@ const router = createBrowserRouter([
       // },
       {
         path: "/spots/:spotId",
-        element: <SpotShow navigate={"a'ole"} />,
+        element: <SpotShow />,
       },
 
       {

@@ -2,20 +2,24 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { spotsByUserThunk } from "../../store/spots";
 import { NavLink } from "react-router-dom";
+import DeleteSpotModal from "./DeleteSpotModal";
+import OpenModalButton from "../OpenModalButton";
+import { useNavigate } from "react-router-dom";
 const ManageSpots = () => {
   const sessionUser = useSelector((state) => state.session.user);
   const spots = useSelector((state) => state.spots);
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   console.log("%c spots log>", "color:red; font-size: 26px", spots);
   useEffect(() => {
     dispatch(spotsByUserThunk(sessionUser.id)).then(setIsLoaded(true));
-  }, [dispatch]);
+  }, [dispatch, sessionUser]);
 
   return (
     <>
-      <h1>THESE YO SPOTS YO!</h1>
+      <h1>Manage/view your spots!</h1>
       <section className="manage-spots-div">
         {isLoaded &&
           spots &&
@@ -54,7 +58,11 @@ const ManageSpots = () => {
                   </NavLink>
                   <div className="owner-buttons">
                     <button>Edit Spot</button>
-                    <button>Delete Spot</button>
+                    <OpenModalButton
+                      navigate={navigate}
+                      buttonText="Delete Spot"
+                      modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                    />
                   </div>
                 </div>
               )
