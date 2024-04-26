@@ -26,7 +26,7 @@ export const loadOne = (spot) => ({
   payload: spot,
 });
 
-export const spotsByUserThunk = (userId) => async (dispatch) => {
+export const spotsByUserThunk = () => async (dispatch) => {
   console.log(
     "%c spotsByUserThunk  at the top",
     "color:green; font-size: 26px"
@@ -102,17 +102,6 @@ const spotsReducer = (state = {}, action) => {
       return newState;
     }
 
-    case LOAD_ONE: {
-      newState = { ...state };
-      // console.log(
-      //   "%c LOAD ONE CALLED, action.spot>",
-      //   "color:green; font-size: 26px",
-      //   action
-      // );
-      newState[action.payload.id] = action.payload;
-
-      return newState;
-    }
     case LOAD_SPOTS: {
       console.log(
         "%c LOAD_SPOTS called, action log>",
@@ -133,8 +122,19 @@ const spotsReducer = (state = {}, action) => {
         });
         return newState;
       }
+      break;
     }
+    case LOAD_ONE: {
+      newState = { ...state };
+      // console.log(
+      //   "%c LOAD ONE CALLED, action.spot>",
+      //   "color:green; font-size: 26px",
+      //   action
+      // );
+      newState[action.payload.id] = action.payload;
 
+      return newState;
+    }
     default:
       return state;
   }
