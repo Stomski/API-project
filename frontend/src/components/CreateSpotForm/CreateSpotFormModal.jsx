@@ -25,13 +25,6 @@ function CreateSpotModal({ navigate }) {
   const spot = useSelector((state) => state.spots.spotById);
   const dispatch = useDispatch();
 
-  console.log(
-    "%c navigate at top of spot form modal>",
-    "color:orange; font-size: 26px",
-    navigate
-  );
-
-  //   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
   useEffect(() => {
@@ -48,6 +41,22 @@ function CreateSpotModal({ navigate }) {
     });
   }, [dispatch, spotId]);
 
+  const createErrorObj = () => {
+    setErrors({});
+    const errorObj = {};
+    if (name === "") errorObj.name = "Name is required";
+    if (city === "") errorObj.city = "City is required";
+    if (state === "") errorObj.state = "State is required";
+    if (country === "") errorObj.country = "Country is required";
+    if (address === "") errorObj.address = "Street address is required";
+    if (description.length < 30)
+      errorObj.description = "Description must be at least 30 characters";
+    if (price <= 0) errorObj.price = "Price per day must be a positive number";
+    if (imageObj.previewImageUrl === "")
+      errorObj.spotImages = "At least one image is required";
+    setErrors(errorObj);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,47 +71,20 @@ function CreateSpotModal({ navigate }) {
       lng: 1,
       price: parseInt(price),
     };
-    setErrors({});
+    createErrorObj();
 
-    const thunkReply = await dispatch(spotCreateThunk(spotData));
+    const response = await dispatch(spotCreateThunk(spotData));
 
-    console.log("%c thunkReply log>", "color:red; font-size: 26px", thunkReply);
-    console.log(updatebool, spot);
-    //example from signupformModal.jsx
-    // if (password === confirmPassword) {
-    //   setErrors({});
-    //   return dispatch(
-    //     sessionActions.signup({
-    //       email,
-    //       username,
-    //       firstName,
-    //       lastName,
-    //       password,
-    //     })
-    //   )
-    //     .then(closeModal)
-    //     .catch(async (res) => {
-    //       const data = await res.json();
-    //       if (data?.errors) {
-    //         setErrors(data.errors);
-    //       }
-    //     });
+    console.log(response, "response frim spot create thunj ");
+    // if (response && response.errors) {
+    //   setErrors({ message: response.errors });
+    // } else {
+    //   closeModal();
     // }
-    // return setErrors({
-    //   confirmPassword:
-    //     "Confirm Password field must be the same as the Password field",
-    //this shit is brutal.
-    // });
 
-    console.log(
-      "%c navigate  is a func! log>",
-      "color:red; font-size: 26px",
-      navigate
-    );
+    // navigate(`/spots/${thunkReply.id}`);
 
-    navigate(`/spots/${thunkReply.id}`);
-    //WOKING AS OF THURSDAY AT 11 AM
-    closeModal();
+    // closeModal();
   };
 
   return (

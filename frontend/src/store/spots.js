@@ -58,11 +58,11 @@ export const spotsByUserThunk = () => async (dispatch) => {
 };
 
 export const spotCreateThunk = (spotData) => async (dispatch) => {
-  console.log(
-    "%c JSON.stringify(spotData) log>",
-    "color:blue; font-size: 26px",
-    JSON.stringify(spotData)
-  );
+  // console.log(
+  //   "%c JSON.stringify(spotData) log>",
+  //   "color:blue; font-size: 26px",
+  //   JSON.stringify(spotData)
+  // );
   try {
     console.log(
       "%c this is the startt of the try in my spot create thunk",
@@ -135,11 +135,11 @@ const spotsReducer = (state = {}, action) => {
     }
 
     case LOAD_SPOTS: {
-      console.log(
-        "%c LOAD_SPOTS called, action log>",
-        "color:blue; font-size: 26px",
-        action.payload
-      );
+      // console.log(
+      //   "%c LOAD_SPOTS called, action log>",
+      //   "color:blue; font-size: 26px",
+      //   action.payload
+      // );
       newState = { ...state };
       if (action.payload.Spots) {
         action.payload.Spots.forEach((spot) => {
