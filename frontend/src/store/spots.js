@@ -4,6 +4,12 @@ import Cookies from "js-cookie";
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const LOAD_ONE = "spots/LOAD_ONE";
 const ADD_SPOT = "spots/ADD_SPOT";
+const GET_USERS_SPOTS = "spots/GET_USERS_SPOTS";
+
+export const getSpotsByUser = (spots) => ({
+  type: GET_USERS_SPOTS,
+  payload: spots,
+});
 
 export const addSpot = (spotData) => ({
   type: ADD_SPOT,
@@ -19,6 +25,17 @@ export const loadOne = (spot) => ({
   type: LOAD_ONE,
   payload: spot,
 });
+
+export const spotsByUserThunk = (userId) => async (dispatch) => {
+  console.log(
+    "%c spotsByUserThunk  at the top",
+    "color:green; font-size: 26px"
+  );
+  const response = await csrfFetch("/api/spots/current", {});
+  const resJson = await response.json();
+  console.log(resJson, "res.json");
+  dispatch(loadSpots(Object.values(resJson)));
+};
 
 export const spotCreateThunk = (spotData) => async (dispatch) => {
   console.log(
@@ -97,16 +114,25 @@ const spotsReducer = (state = {}, action) => {
       return newState;
     }
     case LOAD_SPOTS: {
-      // console.log(
-      //   "%c LOAD_SPOTS called, action log>",
-      //   "color:blue; font-size: 26px",
-      //   action
-      // );
+      console.log(
+        "%c LOAD_SPOTS called, action log>",
+        "color:blue; font-size: 26px",
+        action.payload
+      );
       newState = { ...state };
-      action.payload.Spots.forEach((spot) => {
-        newState[spot.id] = spot;
-      });
-      return newState;
+      if (action.payload.Spots) {
+        action.payload.Spots.forEach((spot) => {
+          newState[spot.id] = spot;
+        });
+        return newState;
+      }
+      if (action.payload) {
+        newState = {};
+        action.payload.forEach((spot) => {
+          newState[spot.id] = spot;
+        });
+        return newState;
+      }
     }
 
     default:
