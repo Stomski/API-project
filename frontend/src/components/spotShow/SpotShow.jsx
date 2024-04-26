@@ -15,6 +15,7 @@ function SpotShow({ navigate }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const reviews = useSelector((state) => state.reviews);
   const sessionUser = useSelector((state) => state.session.user);
+  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
 
   console.log(
     "%c spots in Spot show jxs>",
@@ -34,6 +35,22 @@ function SpotShow({ navigate }) {
     });
     dispatch(reviewFetch(spotId));
   }, [dispatch, spotId]);
+
+  useEffect(() => {
+    if (reviews && Object.values(reviews).length > 0) {
+      Object.values(reviews).forEach((review) => {
+        console.log(
+          "%c review log>",
+          "color:red; font-size: 26px",
+          review.userId,
+          sessionUser.id
+        );
+        if (review.userId === sessionUser.id) {
+          setAlreadyReviewed(true);
+        }
+      });
+    }
+  }, [dispatch, sessionUser]);
 
   return (
     <div className="spotshow">
@@ -75,13 +92,11 @@ function SpotShow({ navigate }) {
             <div className="review-button-div"></div>
 
             <div className="create-review-link">
-              {sessionUser && (
+              {sessionUser && alreadyReviewed === false && (
                 <OpenModalButton
                   navigate={navigate}
                   buttonText="Create a Review!"
-                  modalComponent={
-                    <CreateReviewModal navigate={navigate} spotId={spot.id} />
-                  }
+                  modalComponent={<CreateReviewModal spotId={spot.id} />}
                 />
               )}
             </div>

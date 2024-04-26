@@ -7,11 +7,11 @@ import OpenModalButton from "../OpenModalButton";
 import CreateSpotModal from "../CreateSpotForm";
 
 function Navigation({ isLoaded, navigate }) {
-  console.log(
-    "%c navigate in navigationjsxlog>",
-    "color:blue; font-size: 26px",
-    navigate
-  );
+  // console.log(
+  //   "%c navigate in navigationjsxlog>",
+  //   "color:blue; font-size: 26px",
+  //   navigate
+  // );
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
