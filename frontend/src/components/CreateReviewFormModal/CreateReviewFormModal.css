@@ -1,0 +1,11 @@
+.star-rating-outer {
+  display: flex;
+  justify-content: center;
+}
+.star-rating {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  padding-top: 10px;
+  padding-right: 7px;
+}

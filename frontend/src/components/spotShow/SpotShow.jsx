@@ -79,7 +79,9 @@ function SpotShow({ navigate }) {
                 <OpenModalButton
                   navigate={navigate}
                   buttonText="Create a Review!"
-                  modalComponent={<CreateReviewModal navigate={navigate} />}
+                  modalComponent={
+                    <CreateReviewModal navigate={navigate} spotId={spot.id} />
+                  }
                 />
               )}
             </div>
