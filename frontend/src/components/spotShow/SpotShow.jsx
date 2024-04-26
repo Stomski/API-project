@@ -50,7 +50,7 @@ function SpotShow({ navigate }) {
         }
       });
     }
-  }, [dispatch, sessionUser]);
+  }, [sessionUser]);
 
   return (
     <div className="spotshow">
@@ -92,12 +92,14 @@ function SpotShow({ navigate }) {
             <div className="review-button-div"></div>
 
             <div className="create-review-link">
-              {sessionUser && alreadyReviewed === false && (
+              {sessionUser && alreadyReviewed === false ? (
                 <OpenModalButton
                   navigate={navigate}
                   buttonText="Create a Review!"
                   modalComponent={<CreateReviewModal spotId={spot.id} />}
                 />
+              ) : (
+                <p>cannot review the same spot twice</p>
               )}
             </div>
           </div>

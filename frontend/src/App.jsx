@@ -13,6 +13,7 @@ import * as sessionActions from "./store/session";
 import { Modal } from "./context/Modal";
 import Spots from "./components/SpotsIndex/Spots";
 import SpotShow from "./components/spotShow";
+import ManageSpots from "./components/ManageSpots";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -49,6 +50,11 @@ const router = createBrowserRouter([
         path: "/",
         element: <Spots />,
       },
+      {
+        path: "/spots/current",
+        element: <ManageSpots />,
+      },
+
       // {
       //   path: "login",
       //   element: <LoginFormPage />,
@@ -61,6 +67,7 @@ const router = createBrowserRouter([
         path: "/spots/:spotId",
         element: <SpotShow navigate={"a'ole"} />,
       },
+
       {
         path: "*",
         element: <h1>Sorry, Page Not Found</h1>,
