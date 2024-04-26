@@ -73,12 +73,12 @@ const spotsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
     case ADD_SPOT: {
-      console.log(
-        "%c ADD_SPOT called in spots reducer, state, actuin>",
-        "color:red; font-size: 26px",
-        state,
-        action
-      );
+      // console.log(
+      //   "%c ADD_SPOT called in spots reducer, state, actuin>",
+      //   "color:red; font-size: 26px",
+      //   state,
+      //   action
+      // );
       newState = { ...state };
       newState[action.spotData.id] = action.spotData;
 
@@ -87,21 +87,21 @@ const spotsReducer = (state = {}, action) => {
 
     case LOAD_ONE: {
       newState = { ...state };
-      console.log(
-        "%c LOAD ONE CALLED, action.spot>",
-        "color:green; font-size: 26px",
-        action
-      );
+      // console.log(
+      //   "%c LOAD ONE CALLED, action.spot>",
+      //   "color:green; font-size: 26px",
+      //   action
+      // );
       newState[action.payload.id] = action.payload;
 
       return newState;
     }
     case LOAD_SPOTS: {
-      console.log(
-        "%c LOAD_SPOTS called, action log>",
-        "color:blue; font-size: 26px",
-        action
-      );
+      // console.log(
+      //   "%c LOAD_SPOTS called, action log>",
+      //   "color:blue; font-size: 26px",
+      //   action
+      // );
       newState = { ...state };
       action.payload.Spots.forEach((spot) => {
         newState[spot.id] = spot;

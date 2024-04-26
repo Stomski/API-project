@@ -1,23 +1,27 @@
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "../CreateReviewFormModal/CreateReviewFormModal.css";
 import { useState } from "react";
-// import { useParams } from "react-router-dom";
+import { addReviewThunk } from "../../store/reviews";
 
 function CreateReviewModal({ spotId }) {
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(
+      "%c handleSubmit log>",
+      "color:teal; font-size: 26px",
+      handleSubmit
+    );
+    const reviewObj = { review, stars, spotId };
     setErrors({});
-
     // navigate(`/spots/${thunkReply.id}`);
-
+    dispatch(addReviewThunk(reviewObj));
     closeModal();
   };
 
@@ -33,19 +37,19 @@ function CreateReviewModal({ spotId }) {
           required
           placeholder="Leave your review here..."
         />
-        <div className="star-rating-outer">
-          <div className="star-rating">
+        <div className="stars">
+          <div className="star-map">
             {[1, 2, 3, 4, 5].map((value) => (
               <span
                 key={value}
-                className={value <= stars ? "star-filled" : "star"}
+                className={value <= stars ? "star-filled" : "empty-star"}
                 onClick={() => setStars(value)}
               >
                 &#9733;
               </span>
             ))}
           </div>
-          <p>Stars</p>
+          <p id="stars-label">Stars</p>
         </div>
 
         <button
