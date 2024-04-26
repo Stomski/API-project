@@ -5,7 +5,7 @@ import { useModal } from "../../context/Modal";
 import { useParams } from "react-router-dom";
 import { fetchSpots } from "../../store/spots";
 import { spotCreateThunk } from "../../store/spots";
-//import CSS
+import "./CreateSpotFormModal.css";
 
 function CreateSpotModal({ navigate }) {
   const [address, setAddress] = useState("");
@@ -207,7 +207,7 @@ function CreateSpotModal({ navigate }) {
             <label className="form-label" htmlFor="prev-img">
               Preview Image
             </label>
-            <p className="form-errors">{errors.SpotImages}</p>
+            <p className="form-errors">{errors.spotImages}</p>
             <input
               className="form-input"
               id="prev-img"
