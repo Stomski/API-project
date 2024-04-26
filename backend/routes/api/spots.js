@@ -377,6 +377,8 @@ router.post(
 
     const spot = await Spot.findByPk(req.params.spotId);
 
+    console.log("%c spot log>", "color:red; font-size: 26px", spot);
+
     const reviews = await Review.findAll({
       where: {
         spotId: req.params.spotId,
@@ -384,6 +386,12 @@ router.post(
       },
     });
 
+    if (spot.ownerId === req.user.id) {
+      const err = new Error("Cannot review your own spot, sorry :(");
+      err.title = "Cannot Review Your Own Spot, sorry :(";
+      err.status = 500;
+      return next(err);
+    }
     if (reviews.length) {
       const err = new Error("User already has a review for this spot");
       err.title = "Review from the current user already exists for the Spot";

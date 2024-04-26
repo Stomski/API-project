@@ -21,8 +21,14 @@ function CreateReviewModal({ spotId }) {
     const reviewObj = { review, stars, spotId };
     setErrors({});
     // navigate(`/spots/${thunkReply.id}`);
-    dispatch(addReviewThunk(reviewObj));
-    closeModal();
+    return dispatch(addReviewThunk(reviewObj))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.message) {
+          setErrors({ message: data.message });
+        }
+      });
   };
 
   return (

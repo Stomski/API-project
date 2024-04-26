@@ -21,11 +21,11 @@ export const addReviewThunk = (review) => async (dispatch) => {
   });
   const responseJson = await response.json();
 
-  // console.log(
-  //   "%c responseJson in addreview thunk>",
-  //   "color:yellow; font-size: 26px",
-  //   responseJson
-  // );
+  console.log(
+    "%c responseJson in addreview thunk>",
+    "color:yellow; font-size: 26px",
+    responseJson
+  );
 
   dispatch(addReview(responseJson));
   return responseJson;

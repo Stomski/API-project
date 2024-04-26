@@ -17,17 +17,17 @@ function SpotShow({ navigate }) {
   const sessionUser = useSelector((state) => state.session.user);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
 
-  console.log(
-    "%c spots in Spot show jxs>",
-    "color:blue; font-size: 26px",
-    spot
-  );
+  // console.log(
+  //   "%c spots in Spot show jxs>",
+  //   "color:blue; font-size: 26px",
+  //   spot
+  // );
   //   console.log("%c spotId log>", "color:red; font-size: 26px", spotId);
-  console.log(
-    "%c Object.values(reviews)",
-    "color:blue; font-size: 26px",
-    Object.values(reviews)
-  );
+  // console.log(
+  //   "%c Object.values(reviews)",
+  //   "color:blue; font-size: 26px",
+  //   Object.values(reviews)
+  // );
 
   useEffect(() => {
     dispatch(fetchSpots(spotId)).then(() => {
@@ -39,18 +39,18 @@ function SpotShow({ navigate }) {
   useEffect(() => {
     if (reviews && Object.values(reviews).length > 0) {
       Object.values(reviews).forEach((review) => {
-        console.log(
-          "%c review log>",
-          "color:red; font-size: 26px",
-          review.userId,
-          sessionUser.id
-        );
+        // console.log(
+        //   "%c review log>",
+        //   "color:red; font-size: 26px",
+        //   review.userId,
+        //   sessionUser.id
+        // );
         if (review.userId === sessionUser.id) {
           setAlreadyReviewed(true);
         }
       });
     }
-  }, [sessionUser]);
+  }, [sessionUser, dispatch, spotId, reviews]);
 
   return (
     <div className="spotshow">
