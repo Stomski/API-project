@@ -133,7 +133,10 @@ function CreateSpotModal({ navigate, spotId }) {
 
   return (
     <div className="modal-container">
-      {updatebool ? <h1>Edit Your Spot!</h1> : <h1>Create A Spot!</h1>}
+      {!isLoaded && <h1>loading</h1>}
+      {updatebool && isLoaded && <h1>Edit Your Spot!</h1>}
+      {updatebool && isLoaded && <h1>Create A Spot!</h1>}
+
       {isLoaded && (
         <form onSubmit={handleSubmit}>
           <div className="form-div">
