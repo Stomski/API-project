@@ -39,14 +39,16 @@ export const loadOne = (spot) => ({
 });
 
 export const updateSpotThunk = (spotData) => async (dispatch) => {
-  console.log(spotData, " spotData");
-  console.log("this is the top of my update spot thunks");
+  // console.log(spotData, " spotData");
+  // console.log("this is the top of my update spot thunks");
+
   const response = await csrfFetch(`/api/spots/${spotData.id}`, {
     method: "PUT",
     body: JSON.stringify(spotData),
   });
-  console.log("%c response log>", "color:red; font-size: 26px", response);
+
   dispatch(updateSpot);
+
   return await response.json();
 };
 

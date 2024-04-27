@@ -16,12 +16,16 @@ function SpotShow({ navigate }) {
   const reviews = useSelector((state) => state.reviews);
   const sessionUser = useSelector((state) => state.session.user);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
-
   // console.log(
-  //   "%c spots in Spot show jxs>",
-  //   "color:blue; font-size: 26px",
-  //   spot
+  //   "%c alreadyReviewed log>",
+  //   "color:red; font-size: 26px",
+  //   alreadyReviewed
   // );
+  console.log(
+    "%c spots in Spot show jxs>",
+    "color:blue; font-size: 26px",
+    spot
+  );
   //   console.log("%c spotId log>", "color:red; font-size: 26px", spotId);
   // console.log(
   //   "%c Object.values(reviews)",
@@ -49,6 +53,13 @@ function SpotShow({ navigate }) {
           setAlreadyReviewed(true);
         }
       });
+    }
+    if (sessionUser.id === spot.ownerId) {
+      console.log(
+        "%c alreadyReviewed ihn my session user conditional",
+        "color:blue; font-size: 26px",
+        alreadyReviewed
+      );
     }
   }, [sessionUser, dispatch, spotId, reviews]);
 
@@ -99,7 +110,7 @@ function SpotShow({ navigate }) {
                   modalComponent={<CreateReviewModal spotId={spot.id} />}
                 />
               ) : (
-                <p>cannot review the same spot twice</p>
+                <p></p>
               )}
             </div>
           </div>
