@@ -60,6 +60,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
 
   if (response.status === 200) {
     dispatch(deleteSpot(spotId));
+    return "success";
   } else {
     return "error";
   }
