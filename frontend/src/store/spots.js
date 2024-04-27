@@ -7,17 +7,11 @@ const ADD_SPOT = "spots/ADD_SPOT";
 const GET_USERS_SPOTS = "spots/GET_USERS_SPOTS";
 const DELETE_SPOT = "spots/DELETE_SPOTS";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
-const ADD_IMAGES = "spots/ADD_IMAGES";
 
-export const addImage = (imageObj) => ({
-  type: ADD_IMAGE,
-  payload: imageObj,
-});
-
-export const updateSpot = (spot, imageObj) => ({
+export const updateSpot = (spot, imageArray) => ({
   type: UPDATE_SPOT,
   payload: spot,
-  imageObj,
+  imageArray,
 });
 
 export const deleteSpot = (spot) => ({
@@ -60,12 +54,13 @@ export const updateSpotThunk = (spotData, imageObj) => async (dispatch) => {
         method: "POST",
         body: JSON.stringify(spot),
       });
-      return res.json();
+      return { images: res.json(), spot: newSpot };
     })
   );
-  console.log("%c spotImgs log>", "color:red; font-size: 26px", spotImgs);
-  dispatch(updateSpot(newSpot, spotImgs));
-  return newSpot, spotImgs;
+
+  await dispatch(updateSpot(newSpot, spotImgs));
+
+  return { newSpot, spotImgs };
 };
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
   console.log("this is the top of my delete spot thunk, good work dev", spotId);
@@ -146,6 +141,19 @@ export const fetchSpots = (spotId) => async (dispatch) => {
 const spotsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
+    case UPDATE_SPOT: {
+      newState = { ...state };
+      console.log(
+        "%c action  in update spot reducerlog>",
+        "color:red; font-size: 26px",
+        action,
+        newState
+      );
+      newState[action.payload.id] = action.payload;
+      newState[action.payload.id].imageArray = action.imageArray;
+      return newState;
+    }
+
     case DELETE_SPOT: {
       newState = { ...state };
       console.log(

@@ -23,7 +23,7 @@ function SpotShow({ navigate }) {
   //   "color:red; font-size: 26px",
   //   alreadyReviewed
   // );
-  console.log("%c spot in Spot show jxs>", "color:blue; font-size: 26px", spot);
+  // console.log("%c spot in Spot show jxs>", "color:blue; font-size: 26px", spot);
   //   console.log("%c spotId log>", "color:red; font-size: 26px", spotId);
   // console.log(
   //   "%c Object.values(reviews)",
@@ -76,11 +76,11 @@ function SpotShow({ navigate }) {
       });
     }
     if (sessionUser && isLoaded === true && sessionUser.id === spot.ownerId) {
-      console.log(
-        "%c alreadyReviewed ihn my session user conditional",
-        "color:blue; font-size: 26px",
-        alreadyReviewed
-      );
+      // console.log(
+      //   "%c alreadyReviewed ihn my session user conditional",
+      //   "color:blue; font-size: 26px",
+      //   alreadyReviewed
+      // );
     }
   }, [sessionUser, dispatch, spotId, reviews]);
 

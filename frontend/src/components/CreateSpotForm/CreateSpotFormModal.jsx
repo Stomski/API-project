@@ -24,7 +24,7 @@ function CreateSpotModal({ navigate, spotId }) {
   // const { spotId } = useParams();
   const spot = useSelector((state) => state.spots[spotId]);
 
-  console.log("%c spot log>", "color:orange; font-size: 26px", spot);
+  // console.log("%c spot log>", "color:orange; font-size: 26px", spot);
   const dispatch = useDispatch();
 
   const { closeModal } = useModal();
