@@ -28,7 +28,7 @@ function Spots() {
           (spot) =>
             spot.id &&
             !spot.Owner && (
-              <div className="spot-tile">
+              <div key={spot.id} className="spot-tile">
                 <NavLink
                   className="spot-tile"
                   key={spot.id}

@@ -35,7 +35,7 @@ function SpotShow({ navigate }) {
     console.log(review.createdAt, "review from get month year");
     const splitArray = review.createdAt.split("-");
     const year = splitArray[0];
-    const monthNum = splitArray[1];
+
     const monthNames = [
       "January",
       "February",
@@ -143,7 +143,7 @@ function SpotShow({ navigate }) {
                    */}
 
                   {Object.values(reviews).map((review, index) => (
-                    <div className="review-individual">
+                    <div key={index} className="review-individual">
                       <div className="review-name">{review.User.firstName}</div>
                       <div className="review-month">
                         {Array.from({ length: review.stars }, (_, i) => (

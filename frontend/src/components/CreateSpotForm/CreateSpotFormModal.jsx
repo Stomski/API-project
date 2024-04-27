@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 
 // import { useParams } from "react-router-dom";
@@ -22,7 +22,7 @@ function CreateSpotModal({ navigate, spotId }) {
   const [errors, setErrors] = useState({});
   const [updatebool, setUpdateBool] = useState(false);
   // const { spotId } = useParams();
-  const spot = useSelector((state) => state.spots[spotId]);
+  // const spot = useSelector((state) => state.spots[spotId]);
 
   // console.log("%c spot log>", "color:orange; font-size: 26px", spot);
   const dispatch = useDispatch();

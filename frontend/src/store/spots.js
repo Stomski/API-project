@@ -89,7 +89,7 @@ export const spotsByUserThunk = () => async (dispatch) => {
   dispatch(loadSpots(Object.values(resJson)));
 };
 
-export const spotCreateThunk = (spotData, imageObj) => async (dispatch) => {
+export const spotCreateThunk = (spotData) => async (dispatch) => {
   // console.log(
   //   "%c JSON.stringify(spotData) log>",
   //   "color:blue; font-size: 26px",
