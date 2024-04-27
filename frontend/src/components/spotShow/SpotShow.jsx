@@ -34,6 +34,31 @@ function SpotShow({ navigate }) {
   //   Object.values(reviews)
   // );
 
+  const getMonthYear = (review) => {
+    console.log(review.createdAt, "review from get month year");
+    const splitArray = review.createdAt.split("-");
+    const year = splitArray[0];
+    const monthNum = splitArray[1];
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const month = monthNames[splitArray[1] - 1];
+    console.log(month, year);
+    const returnString = `${month}, ${year}`;
+    return returnString;
+  };
+
   useEffect(() => {
     dispatch(fetchSpots(spotId)).then(() => {
       setIsLoaded(true);
@@ -44,18 +69,13 @@ function SpotShow({ navigate }) {
   useEffect(() => {
     if (reviews && Object.values(reviews).length > 0 && isLoaded === true) {
       Object.values(reviews).forEach((review) => {
-        console.log(
-          "%c review log>",
-          "color:red; font-size: 26px",
-          review.userId,
-          sessionUser.id
-        );
-        if (review.userId === sessionUser.id) {
+        console.log("%c review log>", "color:red; font-size: 26px", review);
+        if (sessionUser && review.userId === sessionUser.id) {
           setAlreadyReviewed(true);
         }
       });
     }
-    if (isLoaded === true && sessionUser.id === spot.ownerId) {
+    if (sessionUser && isLoaded === true && sessionUser.id === spot.ownerId) {
       console.log(
         "%c alreadyReviewed ihn my session user conditional",
         "color:blue; font-size: 26px",
@@ -80,20 +100,42 @@ function SpotShow({ navigate }) {
             />
           )}
 
-          <h3>
+          <h2>
             Hosted by: {`${spot.Owner.firstName} ${spot.Owner.lastName}`}{" "}
-          </h3>
+          </h2>
           <p className="spotshow-details">{`${spot.description}`}</p>
 
           <div className="reviews-div">
-            <h2>REVIEWS</h2>
+            <div className="review-header-div">
+              <div id="review-header-avg-stars">this is the num stars avg</div>
+              <div id="review-header-num-reviews">
+                {Object.values(reviews) && Object.values(reviews).length}
+                num reviews .length
+              </div>
+            </div>
 
             {reviews &&
               Object.values(reviews) &&
               Object.values(reviews).length > 0 && (
                 <div className="all-reviews-box">
+                  <></>
+                  {/**
+                   *
+                   *
+                   *            REVIEW MAP
+                   *
+                   *
+                   */}
+
                   {Object.values(reviews).map((review, index) => (
                     <div className="review-individual">
+                      <div className="review-name">{review.User.firstName}</div>
+                      <div className="review-month">
+                        {Array.from({ length: review.stars }, (_, i) => (
+                          <span key={i}>&#9733;</span>
+                        ))}
+                        {getMonthYear(review)}
+                      </div>
                       <div key={index}>
                         <p>{review.review}</p>
                       </div>
@@ -101,7 +143,7 @@ function SpotShow({ navigate }) {
                         {/* {review.id} reviewId {review.userId} review userID{" "}
                         {sessionUser.id} session user ud to left */}
 
-                        {review.userId === sessionUser.id && (
+                        {sessionUser && review.userId === sessionUser.id && (
                           <>
                             <OpenModalButton
                               navigate={navigate}
