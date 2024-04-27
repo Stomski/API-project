@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import DeleteSpotModal from "./DeleteSpotModal";
 import OpenModalButton from "../OpenModalButton";
 import { useNavigate } from "react-router-dom";
+import CreateSpotModal from "../CreateSpotForm/CreateSpotFormModal";
 const ManageSpots = () => {
   const sessionUser = useSelector((state) => state.session.user);
   const spots = useSelector((state) => state.spots);
@@ -57,7 +58,13 @@ const ManageSpots = () => {
                     </div>
                   </NavLink>
                   <div className="owner-buttons">
-                    <button>Edit Spot</button>
+                    <OpenModalButton
+                      navigate={navigate}
+                      buttonText="edit spot"
+                      modalComponent={
+                        <CreateSpotModal navigate={navigate} spotId={spot.id} />
+                      }
+                    />
                     <OpenModalButton
                       navigate={navigate}
                       buttonText="Delete Spot"

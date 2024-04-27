@@ -7,7 +7,7 @@ import { fetchSpots } from "../../store/spots";
 import { spotCreateThunk } from "../../store/spots";
 import "./CreateSpotFormModal.css";
 
-function CreateSpotModal({ navigate }) {
+function CreateSpotModal({ navigate, spotId }) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -21,25 +21,53 @@ function CreateSpotModal({ navigate }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [errors, setErrors] = useState({});
   const [updatebool, setUpdateBool] = useState(false);
-  const { spotId } = useParams();
-  const spot = useSelector((state) => state.spots.spotById);
+  // const { spotId } = useParams();
+  const spot = useSelector((state) => state.spots[spotId]);
+
+  console.log("%c spot log>", "color:orange; font-size: 26px", spot);
   const dispatch = useDispatch();
 
   const { closeModal } = useModal();
 
+  console.log(
+    "%c updatebool logoutside of if>",
+    "color:red; font-size: 26px",
+    updatebool
+  );
   useEffect(() => {
-    //i need to populate the edit spot form with the current info if this is a edit functionality, and keep it empty for just create
-    dispatch(fetchSpots(spotId)).then(() => {});
-    if (!spotId) {
-      setUpdateBool(false);
-    }
+    console.log("%c useEffect log>", "color:red; font-size: 26px");
+
     if (spotId) {
-      setUpdateBool(true);
+      console.log("%c updatebool inside of if log>", "color:blue; font-size:");
+      dispatch(fetchSpots(spotId)).then(async (spot) => {
+        console.log("spot after the dispatch in the spot id", spot);
+        setAddress(spot.address);
+        setCity(spot.city);
+        setState(spot.state);
+        setCountry(spot.country);
+        setName(spot.name);
+        setDescription(spot.description);
+        setPrice(spot.price);
+        setUpdateBool(true);
+        setIsLoaded(true);
+      });
+    } else {
+      console.log("else called");
+      dispatch(fetchSpots()).then(() => {
+        setAddress("");
+        setCity("");
+        setState("");
+        setCountry("");
+        setName("");
+        setDescription("");
+        setPrice(0);
+        setUpdateBool(false);
+        setIsLoaded(true);
+      });
     }
-    dispatch(fetchSpots()).then(() => {
-      setIsLoaded(true);
-    });
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId, updatebool]);
+
+  // console.log("%c updatebool log>", "color:red; font-size: 26px", updatebool);
 
   const createErrorObj = () => {
     setErrors({});
@@ -89,8 +117,7 @@ function CreateSpotModal({ navigate }) {
 
   return (
     <div className="modal-container">
-      <h1>Create A Spot!</h1>
-
+      {updatebool ? <h1>Edit Your Spot!</h1> : <h1>Create A Spot!</h1>}
       {isLoaded && (
         <form onSubmit={handleSubmit}>
           <div className="form-div">

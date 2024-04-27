@@ -6,6 +6,12 @@ const LOAD_ONE = "spots/LOAD_ONE";
 const ADD_SPOT = "spots/ADD_SPOT";
 const GET_USERS_SPOTS = "spots/GET_USERS_SPOTS";
 const DELETE_SPOT = "spots/DELETE_SPOTS";
+const UPDATE_SPOT = "spots/UPDATE_SPOT";
+
+export const updateSpot = (spot) => ({
+  type: UPDATE_SPOT,
+  payload: spot,
+});
 
 export const deleteSpot = (spot) => ({
   type: DELETE_SPOT,
@@ -31,6 +37,15 @@ export const loadOne = (spot) => ({
   type: LOAD_ONE,
   payload: spot,
 });
+
+export const updateSpotThunk = (spot) => async (dispatch) => {
+  console.log(spot);
+  console.log("this is the top of my update spot thunks");
+  const response = await csrfFetch(`/api/spots/${spot.id}`, {
+    method: "POST",
+    body: JSON.stringify(spotData),
+  });
+};
 
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
   console.log("this is the top of my delete spot thunk, good work dev", spotId);
@@ -102,7 +117,7 @@ export const fetchSpots = (spotId) => async (dispatch) => {
     //   spot
     // );
     dispatch(loadOne(spot));
-    return res;
+    return spot;
   }
 };
 
