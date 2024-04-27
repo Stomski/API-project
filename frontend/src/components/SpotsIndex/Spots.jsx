@@ -10,19 +10,16 @@ function Spots() {
   const spots = useSelector((state) => state.spots);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(
-    (spots) => {
-      // console.log(
-      //   "%c  spots in use effect called in spots.jsx>",
-      //   "color:blue; font-size: 26px",
-      //   spots
-      // );
-      dispatch(fetchSpots()).then(() => {
-        setIsLoaded(true);
-      });
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    // console.log(
+    //   "%c  spots in use effect called in spots.jsx>",
+    //   "color:blue; font-size: 26px",
+    //   spots
+    // );
+    dispatch(fetchSpots()).then(() => {
+      setIsLoaded(true);
+    });
+  }, [dispatch]);
 
   return (
     <div id="spots-box">

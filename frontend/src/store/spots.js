@@ -46,7 +46,7 @@ export const updateSpotThunk = (spotData) => async (dispatch) => {
     body: JSON.stringify(spotData),
   });
   console.log("%c response log>", "color:red; font-size: 26px", response);
-
+  dispatch(updateSpot);
   return await response.json();
 };
 
@@ -60,7 +60,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
 
   if (response.status === 200) {
     dispatch(deleteSpot(spotId));
-    return "success";
+    return resObj;
   } else {
     return "error";
   }
