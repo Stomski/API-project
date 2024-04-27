@@ -93,11 +93,26 @@ function SpotShow({ navigate }) {
             <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
           </div>
           {spot.SpotImages && spot.SpotImages.length > 0 && (
-            <img
-              className="preview-img"
-              src={`${spot.SpotImages[0].url}`}
-              alt="Spot Preview"
-            />
+            <div id="spot-show-image-container">
+              {spot.SpotImages.slice(0, 1).map((image, index) => (
+                <img
+                  key={index}
+                  className="main-preview-img"
+                  src={image.url}
+                  alt={`Spot Preview ${index + 1}`}
+                />
+              ))}
+              <div id="spot-show-small-images">
+                {spot.SpotImages.slice(1, 5).map((image, index) => (
+                  <img
+                    key={index}
+                    className="small-preview-img"
+                    src={image.url}
+                    alt={`Spot Preview ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           )}
 
           <h2>

@@ -21,3 +21,18 @@
 #review-header-avg-stars {
   padding-right: 10px;
 }
+#spot-show-small-images {
+  width: 50%;
+}
+.main-preview-image {
+  width: 50%;
+}
+#spot-show-image-container {
+  display: flex;
+  flex-direction: row;
+}
+.small-preview-img {
+  width: 48%;
+  height: 48%;
+  padding: 5px;
+}
