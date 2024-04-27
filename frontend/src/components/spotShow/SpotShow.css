@@ -1,0 +1,16 @@
+.all-reviews-box {
+  width: 100%; /* Make the div full width */
+  border: 2px solid black; /* Adds a black border */
+  border-radius: 10px; /* Adds rounded corners */
+  padding: 20px; /* Optional: Adds some padding inside the box */
+  display: flex; /* Use flexbox */
+  flex-direction: column;
+}
+
+.review-individual {
+  width: calc(90% - 4px); /* Adjusted width to account for border */
+  border: 2px solid black; /* Adds a black border */
+  border-radius: 10px; /* Adds rounded corners */
+  padding: 20px;
+  margin-bottom: 10px; /* Add margin to create spacing between individual reviews */
+}

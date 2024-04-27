@@ -6,6 +6,7 @@ import { reviewFetch } from "../../store/reviews";
 import CreateReviewModal from "../CreateReviewFormModal/CreateReviewFormModal";
 // import * as sessionActions from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
+import "./SpotShow.css";
 
 function SpotShow({ navigate }) {
   const dispatch = useDispatch();
@@ -41,20 +42,20 @@ function SpotShow({ navigate }) {
   }, [dispatch, spotId]);
 
   useEffect(() => {
-    if (reviews && Object.values(reviews).length > 0) {
+    if (reviews && Object.values(reviews).length > 0 && isLoaded === true) {
       Object.values(reviews).forEach((review) => {
-        // console.log(
-        //   "%c review log>",
-        //   "color:red; font-size: 26px",
-        //   review.userId,
-        //   sessionUser.id
-        // );
+        console.log(
+          "%c review log>",
+          "color:red; font-size: 26px",
+          review.userId,
+          sessionUser.id
+        );
         if (review.userId === sessionUser.id) {
           setAlreadyReviewed(true);
         }
       });
     }
-    if (sessionUser.id === spot.ownerId) {
+    if (isLoaded === true && sessionUser.id === spot.ownerId) {
       console.log(
         "%c alreadyReviewed ihn my session user conditional",
         "color:blue; font-size: 26px",
@@ -90,11 +91,35 @@ function SpotShow({ navigate }) {
             {reviews &&
               Object.values(reviews) &&
               Object.values(reviews).length > 0 && (
-                <div>
+                <div className="all-reviews-box">
                   {Object.values(reviews).map((review, index) => (
-                    <div key={index}>
-                      <p></p>
-                      <p>{review.review}</p>
+                    <div className="review-individual">
+                      <div key={index}>
+                        <p>{review.review}</p>
+                      </div>
+                      <div>
+                        {/* {review.id} reviewId {review.userId} review userID{" "}
+                        {sessionUser.id} session user ud to left */}
+
+                        {review.userId === sessionUser.id && (
+                          <>
+                            <OpenModalButton
+                              navigate={navigate}
+                              buttonText="edit your Review!"
+                              modalComponent={
+                                <CreateReviewModal spotId={spot.id} />
+                              }
+                            />
+                            <OpenModalButton
+                              navigate={navigate}
+                              buttonText="delete your Review!"
+                              modalComponent={
+                                <CreateReviewModal spotId={spot.id} />
+                              }
+                            />
+                          </>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -103,7 +128,9 @@ function SpotShow({ navigate }) {
             <div className="review-button-div"></div>
 
             <div className="create-review-link">
-              {sessionUser && alreadyReviewed === false ? (
+              {sessionUser &&
+              alreadyReviewed === false &&
+              sessionUser.id !== spotId ? (
                 <OpenModalButton
                   navigate={navigate}
                   buttonText="Create a Review!"
