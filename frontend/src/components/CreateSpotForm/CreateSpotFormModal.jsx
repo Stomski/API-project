@@ -98,7 +98,7 @@ function CreateSpotModal({ navigate, spotId }) {
             lng: 1,
             price: parseInt(price),
           };
-          const response = await dispatch(spotCreateThunk(spotData));
+          const response = await dispatch(spotCreateThunk(spotData, imageObj));
 
           navigate(`/spots/${response.id}`);
           closeModal();
@@ -117,7 +117,7 @@ function CreateSpotModal({ navigate, spotId }) {
             price: parseInt(price),
           };
 
-          const response = await dispatch(updateSpotThunk(spotData));
+          const response = await dispatch(updateSpotThunk(spotData, imageObj));
 
           console.log(
             "%c response from update spot thunk>",

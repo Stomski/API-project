@@ -7,10 +7,17 @@ const ADD_SPOT = "spots/ADD_SPOT";
 const GET_USERS_SPOTS = "spots/GET_USERS_SPOTS";
 const DELETE_SPOT = "spots/DELETE_SPOTS";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
+const ADD_IMAGES = "spots/ADD_IMAGES";
 
-export const updateSpot = (spot) => ({
+export const addImage = (imageObj) => ({
+  type: ADD_IMAGE,
+  payload: imageObj,
+});
+
+export const updateSpot = (spot, imageObj) => ({
   type: UPDATE_SPOT,
   payload: spot,
+  imageObj,
 });
 
 export const deleteSpot = (spot) => ({
@@ -23,9 +30,10 @@ export const getSpotsByUser = (spots) => ({
   payload: spots,
 });
 
-export const addSpot = (spotData) => ({
+export const addSpot = (spotData, imageObj) => ({
   type: ADD_SPOT,
   spotData,
+  imageObj,
 });
 
 export const loadSpots = (spots) => ({
@@ -37,21 +45,28 @@ export const loadOne = (spot) => ({
   type: LOAD_ONE,
   payload: spot,
 });
-
-export const updateSpotThunk = (spotData) => async (dispatch) => {
-  // console.log(spotData, " spotData");
-  // console.log("this is the top of my update spot thunks");
-
+export const updateSpotThunk = (spotData, imageObj) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotData.id}`, {
     method: "PUT",
     body: JSON.stringify(spotData),
   });
+  const newSpot = await response.json();
 
-  dispatch(updateSpot);
+  const spotImgs = await Promise.all(
+    Object.values(imageObj).map(async (spotUrl) => {
+      const spot = { url: spotUrl, preview: false };
 
-  return await response.json();
+      const res = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
+        method: "POST",
+        body: JSON.stringify(spot),
+      });
+      return res.json();
+    })
+  );
+  console.log("%c spotImgs log>", "color:red; font-size: 26px", spotImgs);
+  dispatch(updateSpot(newSpot, spotImgs));
+  return newSpot, spotImgs;
 };
-
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
   console.log("this is the top of my delete spot thunk, good work dev", spotId);
   const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -79,7 +94,7 @@ export const spotsByUserThunk = () => async (dispatch) => {
   dispatch(loadSpots(Object.values(resJson)));
 };
 
-export const spotCreateThunk = (spotData) => async (dispatch) => {
+export const spotCreateThunk = (spotData, imageObj) => async (dispatch) => {
   // console.log(
   //   "%c JSON.stringify(spotData) log>",
   //   "color:blue; font-size: 26px",

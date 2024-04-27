@@ -17,16 +17,13 @@ function SpotShow({ navigate }) {
   const reviews = useSelector((state) => state.reviews);
   const sessionUser = useSelector((state) => state.session.user);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+  const [sessionUserOwns, setSessionUserOwns] = useState(false);
   // console.log(
   //   "%c alreadyReviewed log>",
   //   "color:red; font-size: 26px",
   //   alreadyReviewed
   // );
-  console.log(
-    "%c spots in Spot show jxs>",
-    "color:blue; font-size: 26px",
-    spot
-  );
+  console.log("%c spot in Spot show jxs>", "color:blue; font-size: 26px", spot);
   //   console.log("%c spotId log>", "color:red; font-size: 26px", spotId);
   // console.log(
   //   "%c Object.values(reviews)",
@@ -67,6 +64,9 @@ function SpotShow({ navigate }) {
   }, [dispatch, spotId]);
 
   useEffect(() => {
+    if (sessionUser && spot && sessionUser.id === spot.ownerId) {
+      setSessionUserOwns(true);
+    }
     if (reviews && Object.values(reviews).length > 0 && isLoaded === true) {
       Object.values(reviews).forEach((review) => {
         console.log("%c review log>", "color:red; font-size: 26px", review);
@@ -170,16 +170,12 @@ function SpotShow({ navigate }) {
             <div className="review-button-div"></div>
 
             <div className="create-review-link">
-              {sessionUser &&
-              alreadyReviewed === false &&
-              sessionUser.id !== spotId ? (
+              {sessionUser && alreadyReviewed === false && !sessionUserOwns && (
                 <OpenModalButton
                   navigate={navigate}
                   buttonText="Create a Review!"
                   modalComponent={<CreateReviewModal spotId={spot.id} />}
                 />
-              ) : (
-                <p></p>
               )}
             </div>
           </div>
