@@ -38,13 +38,16 @@ export const loadOne = (spot) => ({
   payload: spot,
 });
 
-export const updateSpotThunk = (spot) => async (dispatch) => {
-  console.log(spot);
+export const updateSpotThunk = (spotData) => async (dispatch) => {
+  console.log(spotData, " spotData");
   console.log("this is the top of my update spot thunks");
-  const response = await csrfFetch(`/api/spots/${spot.id}`, {
-    method: "POST",
+  const response = await csrfFetch(`/api/spots/${spotData.id}`, {
+    method: "PUT",
     body: JSON.stringify(spotData),
   });
+  console.log("%c response log>", "color:red; font-size: 26px", response);
+
+  return await response.json();
 };
 
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
@@ -52,6 +55,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
     method: "DELETE",
   });
+
   const resObj = await response.json();
 
   if (response.status === 200) {
@@ -62,10 +66,10 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
 };
 
 export const spotsByUserThunk = () => async (dispatch) => {
-  console.log(
-    "%c spotsByUserThunk  at the top",
-    "color:green; font-size: 26px"
-  );
+  // console.log(
+  //   "%c spotsByUserThunk  at the top",
+  //   "color:green; font-size: 26px"
+  // );
   const response = await csrfFetch("/api/spots/current", {});
   const resJson = await response.json();
   console.log(resJson, "res.json");

@@ -65,6 +65,7 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
 
 /***************** *   EDIT SPOT  *************************/
 -router.put("/:spotId", requireAuth, spotValidator, async (req, res, next) => {
+  console.log("this is the top of my edit spots backend rputeer");
   let spot = await Spot.findByPk(req.params.spotId);
 
   if (spot === null) {

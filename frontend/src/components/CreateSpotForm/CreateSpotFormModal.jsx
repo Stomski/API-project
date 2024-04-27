@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 
-import { useParams } from "react-router-dom";
-import { fetchSpots } from "../../store/spots";
+// import { useParams } from "react-router-dom";
+import { fetchSpots, updateSpotThunk } from "../../store/spots";
 import { spotCreateThunk } from "../../store/spots";
 import "./CreateSpotFormModal.css";
 
@@ -29,18 +29,9 @@ function CreateSpotModal({ navigate, spotId }) {
 
   const { closeModal } = useModal();
 
-  console.log(
-    "%c updatebool logoutside of if>",
-    "color:red; font-size: 26px",
-    updatebool
-  );
   useEffect(() => {
-    console.log("%c useEffect log>", "color:red; font-size: 26px");
-
     if (spotId) {
-      console.log("%c updatebool inside of if log>", "color:blue; font-size:");
       dispatch(fetchSpots(spotId)).then(async (spot) => {
-        console.log("spot after the dispatch in the spot id", spot);
         setAddress(spot.address);
         setCity(spot.city);
         setState(spot.state);
@@ -52,7 +43,6 @@ function CreateSpotModal({ navigate, spotId }) {
         setIsLoaded(true);
       });
     } else {
-      console.log("else called");
       dispatch(fetchSpots()).then(() => {
         setAddress("");
         setCity("");
@@ -66,8 +56,6 @@ function CreateSpotModal({ navigate, spotId }) {
       });
     }
   }, [dispatch, spotId, updatebool]);
-
-  // console.log("%c updatebool log>", "color:red; font-size: 26px", updatebool);
 
   const createErrorObj = () => {
     setErrors({});
@@ -88,31 +76,59 @@ function CreateSpotModal({ navigate, spotId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const spotData = {
-      country,
-      address,
-      city,
-      state,
-      description,
-      name,
-      lat: 1,
-      lng: 1,
-      price: parseInt(price),
-    };
     createErrorObj();
 
-    const response = await dispatch(spotCreateThunk(spotData));
+    if (Object.values(errors).length) {
+      if (
+        name !== "" &&
+        city !== "" &&
+        state !== "" &&
+        country !== "" &&
+        address !== ""
+      ) {
+        if (updatebool === false) {
+          const spotData = {
+            country,
+            address,
+            city,
+            state,
+            description,
+            name,
+            lat: 1,
+            lng: 1,
+            price: parseInt(price),
+          };
+          const response = await dispatch(spotCreateThunk(spotData));
 
-    console.log(response, "response frim spot create thunj ");
-    // if (response && response.errors) {
-    //   setErrors({ message: response.errors });
-    // } else {
-    //   closeModal();
-    // }
+          navigate(`/spots/${response.id}`);
+          closeModal();
+        } else if (updatebool === true) {
+          console.log("updating");
+          const spotData = {
+            id: spotId,
+            country,
+            address,
+            city,
+            state,
+            description,
+            name,
+            lat: 1,
+            lng: 1,
+            price: parseInt(price),
+          };
 
-    // navigate(`/spots/${thunkReply.id}`);
+          const response = await dispatch(updateSpotThunk(spotData));
 
-    // closeModal();
+          console.log(
+            "%c response from update spot thunk>",
+            "color:teal; font-size: 26px",
+            response
+          );
+          navigate(`/spots/${spotData.id}`);
+          closeModal();
+        }
+      }
+    }
   };
 
   return (

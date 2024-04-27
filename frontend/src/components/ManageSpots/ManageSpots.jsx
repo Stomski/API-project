@@ -6,6 +6,8 @@ import DeleteSpotModal from "./DeleteSpotModal";
 import OpenModalButton from "../OpenModalButton";
 import { useNavigate } from "react-router-dom";
 import CreateSpotModal from "../CreateSpotForm/CreateSpotFormModal";
+import "./ManageSpots.css";
+
 const ManageSpots = () => {
   const sessionUser = useSelector((state) => state.session.user);
   const spots = useSelector((state) => state.spots);
@@ -20,7 +22,7 @@ const ManageSpots = () => {
 
   return (
     <>
-      <h1>Manage/view your spots!</h1>
+      <h1>Welcome to Your Spots!</h1>
       <section className="manage-spots-div">
         {isLoaded &&
           spots &&
