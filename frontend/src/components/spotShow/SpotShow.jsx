@@ -92,7 +92,7 @@ function SpotShow({ navigate }) {
           <div className="spot-details">
             <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
           </div>
-          {spot.SpotImages.length > 0 && (
+          {spot.SpotImages && spot.SpotImages.length > 0 && (
             <img
               className="preview-img"
               src={`${spot.SpotImages[0].url}`}
