@@ -1,14 +1,19 @@
 .preview-img {
-  height: 300px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 #spots-box {
-  width: 100%;
   border: 2px solid black;
   border-radius: 10px;
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   justify-content: space-around;
 }
 
@@ -16,4 +21,18 @@
   border: 2px solid black;
   border-radius: 10px;
   padding: 20px;
+
+  margin-bottom: 20px;
+}
+
+.spot-tile {
+  width: 21%;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.spot-name {
+  margin-top: 0;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

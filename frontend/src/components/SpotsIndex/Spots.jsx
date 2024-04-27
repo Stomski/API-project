@@ -23,12 +23,12 @@ function Spots() {
 
   return (
     <div id="spots-box">
-      <div id="">
-        {isLoaded &&
-          Object.values(spots).map(
-            (spot) =>
-              spot.id &&
-              !spot.Owner && (
+      {isLoaded &&
+        Object.values(spots).map(
+          (spot) =>
+            spot.id &&
+            !spot.Owner && (
+              <div className="spot-tile">
                 <NavLink
                   className="spot-tile"
                   key={spot.id}
@@ -57,9 +57,9 @@ function Spots() {
                     </p>
                   </div>
                 </NavLink>
-              )
-          )}
-      </div>
+              </div>
+            )
+        )}
     </div>
   );
 }
