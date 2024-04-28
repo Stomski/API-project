@@ -6,6 +6,7 @@
   border-radius: 10px; /* Rounded border */
   padding: 10px; /* Add padding to make it visually appealing */
   padding-left: 30px;
+  z-index: 1000;
 }
 
 .hidden {
