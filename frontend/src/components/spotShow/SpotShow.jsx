@@ -139,7 +139,12 @@ function SpotShow({ navigate }) {
               <div id="review-header-avg-stars">this is the num stars avg</div>
               <div id="review-header-num-reviews">
                 {Object.values(reviews) && Object.values(reviews).length}
-                num reviews .length
+                {Object.values(reviews) &&
+                  Object.values(reviews).length === 1 &&
+                  "  Review"}
+                {Object.values(reviews) &&
+                  Object.values(reviews).length > 1 &&
+                  "  Reviews"}
               </div>
             </div>
 
