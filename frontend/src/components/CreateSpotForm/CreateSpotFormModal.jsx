@@ -86,6 +86,11 @@ function CreateSpotModal({ navigate, spotId }) {
         "%c handleSubmit TOP OF IFObject.values(errors)",
         "color:blue; font-size: 26px"
       );
+      console.log(
+        "%c Object.values(errors) log at top of ifs in handle>",
+        "color:red; font-size: 26px",
+        Object.values(errors)
+      );
       if (
         name !== "" &&
         city !== "" &&
