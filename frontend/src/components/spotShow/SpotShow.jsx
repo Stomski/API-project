@@ -181,6 +181,16 @@ function SpotShow({ navigate }) {
               </div>
             </div>
 
+            <div className="create-review-link">
+              {sessionUser && alreadyReviewed === false && !sessionUserOwns && (
+                <OpenModalButton
+                  navigate={navigate}
+                  buttonText="Create a Review!"
+                  modalComponent={<CreateReviewModal spotId={spot.id} />}
+                />
+              )}
+            </div>
+
             {reviews &&
               Object.values(reviews) &&
               Object.values(reviews).length > 0 && (
@@ -235,16 +245,6 @@ function SpotShow({ navigate }) {
               )}
 
             <div className="review-button-div"></div>
-
-            <div className="create-review-link">
-              {sessionUser && alreadyReviewed === false && !sessionUserOwns && (
-                <OpenModalButton
-                  navigate={navigate}
-                  buttonText="Create a Review!"
-                  modalComponent={<CreateReviewModal spotId={spot.id} />}
-                />
-              )}
-            </div>
           </div>
         </>
       ) : (
