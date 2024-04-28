@@ -22,7 +22,7 @@ const ManageSpots = () => {
 
   return (
     <>
-      <h1>Welcome to Your Spots!</h1>
+      <h1>Manage Spots!</h1>
       <section className="manage-spots-div">
         {isLoaded &&
           spots &&
