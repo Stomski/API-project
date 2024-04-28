@@ -45,3 +45,45 @@
 .preview-image-div {
   width: 50%;
 }
+.below-images-div {
+  display: flex;
+  flex-direction: row;
+}
+.review-text-div {
+  width: 70%;
+}
+.review-info-div {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+}
+.reserve-button-div {
+  flex-direction: row;
+  display: flex;
+  padding-right: 5px;
+}
+#reserve-button-id {
+  padding: 5px;
+  margin: 6px;
+}
+.stars-render-above-reviews {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.star-label {
+  padding-right: 5px;
+}
+#review-header-num-reviews {
+  display: flex;
+  align-items: center;
+}
+.review-header-div {
+  display: flex;
+  justify-content: left;
+}

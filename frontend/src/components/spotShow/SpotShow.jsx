@@ -56,6 +56,15 @@ function SpotShow({ navigate }) {
     return returnString;
   };
 
+  const findReviewAverage = (reviews) => {
+    let count = 0;
+    Object.values(reviews).forEach((review) => {
+      count += review.stars;
+    });
+    let avgStars = count / Object.values(reviews).length;
+    return avgStars;
+  };
+
   useEffect(() => {
     dispatch(fetchSpots(spotId)).then(() => {
       setIsLoaded(true);
@@ -120,7 +129,7 @@ function SpotShow({ navigate }) {
                       <img
                         key={`placeholder-${index}`}
                         className="small-preview-img"
-                        src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1713558499/samples/logo.png" // Replace with your placeholder image URL
+                        src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1714267658/Screenshot_2024-04-27_at_7.27.34_PM_nwfoup.png" // Replace with your placeholder image URL
                         alt={`Placeholder Image ${index + 1}`}
                       />
                     )
@@ -128,17 +137,41 @@ function SpotShow({ navigate }) {
               </div>
             </div>
           )}
+          <div className="below-images-div">
+            <div className="review-text-div">
+              <h2>
+                Hosted by: {`${spot.Owner.firstName} ${spot.Owner.lastName}`}{" "}
+              </h2>
+              <p className="spotshow-details">{`${spot.description}`}</p>
+            </div>
+            <div className="review-info-div">
+              <div className="stars-show">
+                {reviews &&
+                  Object.values(reviews) &&
+                  findReviewAverage(reviews)}{" "}
+                &#9733;
+              </div>
 
-          <h2>
-            Hosted by: {`${spot.Owner.firstName} ${spot.Owner.lastName}`}{" "}
-          </h2>
-          <p className="spotshow-details">{`${spot.description}`}</p>
+              <div className="reserve-button-div">
+                <p>{spot.price} /night!</p>
+                <button id="reserve-button-id">Reserve now!</button>
+              </div>
+            </div>
+          </div>
 
           <div className="reviews-div">
             <div className="review-header-div">
-              <div id="review-header-avg-stars">this is the num stars avg</div>
+              <div id="review-header-avg-stars">
+                {reviews && Object.values(reviews) && (
+                  <div className="stars-render-above-reviews">
+                    <p> &#9733;</p>
+                    <p className="star-label">{":   "}</p>
+                    {findReviewAverage(reviews)}
+                  </div>
+                )}
+              </div>
               <div id="review-header-num-reviews">
-                {Object.values(reviews) && Object.values(reviews).length}
+                {reviews && Object.values(reviews).length}
                 {Object.values(reviews) &&
                   Object.values(reviews).length === 1 &&
                   "  Review"}
