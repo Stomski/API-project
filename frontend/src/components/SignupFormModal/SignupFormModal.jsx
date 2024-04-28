@@ -58,7 +58,16 @@ function SignupFormModal() {
           password,
         })
       )
-        .then(closeModal)
+        .then(async (res) => {
+          if (res.ok) {
+            await closeModal();
+          } else {
+            const data = await res.json();
+            if (data?.errors) {
+              setErrors(data.errors);
+            }
+          }
+        })
         .catch(async (res) => {
           const data = await res.json();
           if (data?.errors) {
