@@ -119,6 +119,7 @@ function SpotShow({ navigate }) {
     }
 
     const newSpot = { ...spot };
+    console.log(spotState);
     setSpotState(newSpot);
   }, [sessionUser, dispatch, spotId, reviews, spot]);
 
@@ -260,7 +261,7 @@ function SpotShow({ navigate }) {
           <div className="reviews-div">
             <div className="review-header-div">
               <div id="review-header-avg-stars">
-                {reviews && Object.values(reviews) > 0 && (
+                {reviews && Object.values(reviews).length > 0 && (
                   <div className="stars-render-above-reviews">
                     <p> &#9733;</p>
                     <p className="star-label">{":   "}</p>
@@ -269,12 +270,13 @@ function SpotShow({ navigate }) {
                 )}
               </div>
               <div id="review-header-num-reviews">
-                {reviews && Object.values(reviews).length > 0}
-                {Object.values(reviews) &&
-                  Object.values(reviews).length === 1 &&
-                  "  Review"}
-                {Object.values(reviews) &&
-                  (Object.values(reviews).length > 1) & "  Reviews"}
+                {reviews && Object.values(reviews).length > 0 && (
+                  <>
+                    {Object.values(reviews).length === 1 && "1 Review"}
+                    {Object.values(reviews).length > 1 &&
+                      `${Object.values(reviews).length} Reviews`}
+                  </>
+                )}
               </div>
             </div>
 

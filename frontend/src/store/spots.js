@@ -228,7 +228,7 @@ const spotsReducer = (state = {}, action) => {
       if (action.payload) {
         newState = {};
         action.payload.forEach((spot) => {
-          newState[singleSpot][spot.id] = spot;
+          newState.singleSpot[spot.id] = spot;
         });
         return newState;
       }
