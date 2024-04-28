@@ -119,7 +119,7 @@ function SpotShow({ navigate }) {
                     (_, index) => (
                       <img
                         key={`placeholder-${index}`}
-                        className="small-placeholder-img"
+                        className="small-preview-img"
                         src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1713558499/samples/logo.png" // Replace with your placeholder image URL
                         alt={`Placeholder Image ${index + 1}`}
                       />
