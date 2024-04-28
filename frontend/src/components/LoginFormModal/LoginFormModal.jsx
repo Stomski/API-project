@@ -20,6 +20,12 @@ function LoginFormModal() {
     }
   }, [credential, password]);
 
+  const signInDemoUser = () => {
+    return dispatch(
+      sessionActions.login({ credential: "mcurie", password: "password" })
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
