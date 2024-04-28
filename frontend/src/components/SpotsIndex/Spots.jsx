@@ -44,7 +44,17 @@ function Spots() {
                     <h2 key={spot.name} className="spot-name">
                       {spot.name}
                     </h2>
-                    <div id="location-reviews"></div>
+
+                    <div id="location-star-avg">
+                      {spot.avgRating > 1 ? (
+                        <>
+                          <span>&#9733;</span>
+                          <span>{spot.avgRating.toFixed(1)}</span>
+                        </>
+                      ) : (
+                        <>NEW!</>
+                      )}
+                    </div>
                     <p
                       key={spot.city}
                       className="spot-location"
