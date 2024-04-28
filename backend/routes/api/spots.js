@@ -310,11 +310,11 @@ router.get("/current", requireAuth, async (req, res, next) => {
   });
 
   if (!currSpots.length) {
-    const err = new Error("no spots owned by current user");
-    // console.log(
+    // const err = new Error("no spots owned by current user");
+    // // console.log(
     //   "searching for thhis 1d!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     // );
-    return next(err);
+    return [];
   }
 
   // console.log(currSpots, "<<<<<<<<<<<<<<<<<<<< CURR SPOTS");
