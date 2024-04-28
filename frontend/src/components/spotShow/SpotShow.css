@@ -23,14 +23,19 @@
 }
 #spot-show-small-images {
   width: 50%;
+  display: flex;
+  flex-flow: wrap;
+  flex-direction: row;
 }
 .main-preview-image {
-  width: 50%;
+  width: 45%;
+  display: flex;
 }
 #spot-show-image-container {
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: row;
+  flex-flow: wrap;
 }
 .small-preview-img {
   width: 48%;
