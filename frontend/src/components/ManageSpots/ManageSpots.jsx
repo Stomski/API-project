@@ -6,6 +6,7 @@ import DeleteSpotModal from "./DeleteSpotModal";
 import OpenModalButton from "../OpenModalButton";
 import { useNavigate } from "react-router-dom";
 import CreateSpotModal from "../CreateSpotForm/CreateSpotFormModal";
+import { fetchSpots } from "../../store/spots";
 import "./ManageSpots.css";
 
 const ManageSpots = () => {
@@ -23,6 +24,17 @@ const ManageSpots = () => {
   useEffect(() => {
     dispatch(spotsByUserThunk(sessionUser.id)).then(setIsLoaded(true));
   }, [dispatch, sessionUser]);
+
+  useEffect(() => {
+    // console.log(
+    //   "%c  spots in use effect called in spots.jsx>",
+    //   "color:blue; font-size: 26px",
+    //   spots
+    // );
+    dispatch(fetchSpots()).then(() => {
+      setIsLoaded(true);
+    });
+  }, [dispatch]);
 
   return (
     <>

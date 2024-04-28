@@ -12,6 +12,7 @@ function SpotShow({ navigate }) {
   const dispatch = useDispatch();
 
   const { spotId } = useParams();
+
   const spot = useSelector((state) => state.spots[spotId]);
   const [isLoaded, setIsLoaded] = useState(false);
   const reviews = useSelector((state) => state.reviews);
@@ -70,6 +71,17 @@ function SpotShow({ navigate }) {
   };
 
   useEffect(() => {
+    // console.log(
+    //   "%c  spots in use effect called in spots.jsx>",
+    //   "color:blue; font-size: 26px",
+    //   spots
+    // );
+    dispatch(fetchSpots()).then(() => {
+      setIsLoaded(true);
+    });
+  });
+
+  useEffect(() => {
     dispatch(fetchSpots(spotId)).then(() => {
       setIsLoaded(true);
     });
@@ -95,18 +107,39 @@ function SpotShow({ navigate }) {
       //   alreadyReviewed
       // );
     }
-  }, [sessionUser, dispatch, spotId, reviews]);
+    if (spot && isLoaded && !spot.SpotImages) {
+      spot.SpotImages = [];
+    }
+  }, [sessionUser, dispatch, spotId, reviews, spot]);
 
   return (
     <div className="spotshow">
       {isLoaded && spot && !spot.errors ? (
         <>
+          {console.log(
+            "%c spot log> at top of return spotsshow",
+            "color:red; font-size: 26px",
+            spot
+          )}
           <h1>{spot.name}</h1>
           <div className="spot-details">
             <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
           </div>
+          {console.log(
+            "%c spot log> DITRECTLY ABOVEspot-show-image-containerw",
+            "color:red; font-size: 26px",
+            spot
+          )}
+          {spot.SpotImages && spot.SpotImages.length === 0 && (
+            <div>THIS IS A TESDT</div>
+          )}
           {spot.SpotImages && spot.SpotImages.length > 0 && (
             <div id="spot-show-image-container">
+              {console.log(
+                "%c spot log> spot-show-image-containerw",
+                "color:red; font-size: 26px",
+                spot
+              )}
               <div className="preview-image-div">
                 {spot.SpotImages.slice(0, 1).map((image, index) => (
                   <img
@@ -116,6 +149,11 @@ function SpotShow({ navigate }) {
                     alt={`Spot Preview ${index + 1}`}
                   />
                 ))}
+                {console.log(
+                  "%c spot log> BELOW preview imabe div",
+                  "color:red; font-size: 26px",
+                  spot
+                )}
               </div>
 
               <div id="spot-show-small-images">
@@ -141,20 +179,27 @@ function SpotShow({ navigate }) {
               </div>
             </div>
           )}
+
           <div className="below-images-div">
-            <div className="review-text-div">
-              <h2>
-                Hosted by: {`${spot.Owner.firstName} ${spot.Owner.lastName}`}{" "}
-              </h2>
-              <p className="spotshow-details">{`${spot.description}`}</p>
-            </div>
-            <div className="review-info-div">
-              <div className="stars-show">
-                {reviews &&
-                  Object.values(reviews) &&
-                  findReviewAverage(reviews)}{" "}
-                &#9733;
+            {spot && spot.Owner && (
+              <div className="review-text-div">
+                <h2>
+                  Hosted by: {`${spot.Owner.firstName} ${spot.Owner.lastName}`}{" "}
+                </h2>
+                <p className="spotshow-details">{`${spot.description}`}</p>
               </div>
+            )}
+
+            <div className="review-info-div">
+              {reviews && Object.values(reviews) > 0 ? (
+                <>
+                  <div className="stars-show">
+                    {findReviewAverage(reviews)} &#9733;
+                  </div>
+                </>
+              ) : (
+                <p>New!</p>
+              )}
 
               <div className="reserve-button-div">
                 <p>{spot.price} /night!</p>
@@ -168,7 +213,7 @@ function SpotShow({ navigate }) {
           <div className="reviews-div">
             <div className="review-header-div">
               <div id="review-header-avg-stars">
-                {reviews && Object.values(reviews) && (
+                {reviews && Object.values(reviews) > 0 && (
                   <div className="stars-render-above-reviews">
                     <p> &#9733;</p>
                     <p className="star-label">{":   "}</p>
@@ -177,7 +222,7 @@ function SpotShow({ navigate }) {
                 )}
               </div>
               <div id="review-header-num-reviews">
-                {reviews && Object.values(reviews).length}
+                {reviews && Object.values(reviews).length > 0}
                 {Object.values(reviews) &&
                   Object.values(reviews).length === 1 &&
                   "  Review"}
@@ -196,7 +241,10 @@ function SpotShow({ navigate }) {
                 />
               )}
             </div>
-
+            {sessionUser.id !== spot.ownerId &&
+              (!reviews || Object.values(reviews).length < 1) && (
+                <h3>be the first to subit a review!</h3>
+              )}
             {reviews &&
               Object.values(reviews) &&
               Object.values(reviews).length > 0 && (
