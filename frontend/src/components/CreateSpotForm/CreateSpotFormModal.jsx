@@ -74,11 +74,18 @@ function CreateSpotModal({ navigate, spotId }) {
   };
 
   const handleSubmit = async (e) => {
+    console.log("%c handleSubmit TOP OF CREATE", "color:blue; font-size: 26px");
+    console.log(Object.values(errors));
+
     e.preventDefault();
 
     createErrorObj();
 
-    if (Object.values(errors).length) {
+    if (!Object.values(errors).length) {
+      console.log(
+        "%c handleSubmit TOP OF IFObject.values(errors)",
+        "color:blue; font-size: 26px"
+      );
       if (
         name !== "" &&
         city !== "" &&
