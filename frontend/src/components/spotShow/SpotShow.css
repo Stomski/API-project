@@ -27,9 +27,9 @@
   flex-flow: wrap;
   flex-direction: row;
 }
-.main-preview-image {
-  width: 45%;
-  display: flex;
+.main-preview-img {
+  width: 100%;
+  height: auto;
 }
 #spot-show-image-container {
   width: 100%;
@@ -39,6 +39,9 @@
 }
 .small-preview-img {
   width: 48%;
-  height: 48%;
-  padding: 5px;
+  height: auto;
+  padding: 2px;
+}
+.preview-image-div {
+  width: 50%;
 }
