@@ -28,7 +28,7 @@ function Spots() {
           (spot) =>
             spot.id &&
             !spot.Owner && (
-              <div key={spot.id} className="spot-tile">
+              <div key={spot.id} className="spot-tile spot-name-tooltip">
                 <NavLink
                   className="spot-tile"
                   key={spot.id}
@@ -41,7 +41,10 @@ function Spots() {
                       src={spot.previewImage}
                       alt={`${spot.name} Preview Image`}
                     />
-                    <h2 key={spot.name} className="spot-name">
+                    <h2
+                      key={spot.name}
+                      className="spot-name spot-name-tooltip-text"
+                    >
                       {spot.name}
                     </h2>
 

@@ -30,9 +30,39 @@
   margin-top: 0;
   margin-bottom: 10px;
 }
+.spot-tile:hover {
+  width: 21%;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 .spot-name {
   margin-top: 0;
   margin-bottom: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.spot-name-tooltip:hover .spot-name-tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.spot-name-tooltip .spot-name-tooltip-text {
+  visibility: hidden;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 75%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.spot-name-tooltip {
+  position: relative;
 }
