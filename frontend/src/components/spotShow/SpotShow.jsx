@@ -19,6 +19,7 @@ function SpotShow({ navigate }) {
   const sessionUser = useSelector((state) => state.session.user);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
   const [sessionUserOwns, setSessionUserOwns] = useState(false);
+  const [spotState, setSpotState] = useState(spot);
   // console.log(
   //   "%c alreadyReviewed log>",
   //   "color:red; font-size: 26px",
@@ -79,7 +80,7 @@ function SpotShow({ navigate }) {
     dispatch(fetchSpots()).then(() => {
       setIsLoaded(true);
     });
-  });
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchSpots(spotId)).then(() => {
@@ -110,6 +111,9 @@ function SpotShow({ navigate }) {
     if (spot && isLoaded && !spot.SpotImages) {
       spot.SpotImages = [];
     }
+
+    const newSpot = { ...spot };
+    setSpotState(newSpot);
   }, [sessionUser, dispatch, spotId, reviews, spot]);
 
   return (
@@ -131,7 +135,44 @@ function SpotShow({ navigate }) {
             spot
           )}
           {spot.SpotImages && spot.SpotImages.length === 0 && (
-            <div>THIS IS A TESDT</div>
+            <div id="spot-show-image-container">
+              <div className="preview-image-div">
+                <img
+                  key={spot.id}
+                  className="main-preview-img"
+                  src={spot.previewImage}
+                  alt={`Spot Preview`}
+                />
+
+                {console.log(
+                  "%c spot log> BELOW preview imabe div",
+                  "color:red; font-size: 26px",
+                  spot
+                )}
+              </div>
+
+              <div id="spot-show-small-images">
+                {spot.SpotImages.slice(1, 5).map((image, index) => (
+                  <img
+                    key={index}
+                    className="small-preview-img"
+                    src={image.url}
+                    alt={`Spot Preview ${index + 1}`}
+                  />
+                ))}
+                {spot.SpotImages.length < 5 &&
+                  Array.from({ length: 5 - spot.SpotImages.length }).map(
+                    (_, index) => (
+                      <img
+                        key={`placeholder-${index}`}
+                        className="small-preview-img"
+                        src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1714267658/Screenshot_2024-04-27_at_7.27.34_PM_nwfoup.png" // Replace with your placeholder image URL
+                        alt={`Placeholder Image ${index + 1}`}
+                      />
+                    )
+                  )}
+              </div>
+            </div>
           )}
           {spot.SpotImages && spot.SpotImages.length > 0 && (
             <div id="spot-show-image-container">
