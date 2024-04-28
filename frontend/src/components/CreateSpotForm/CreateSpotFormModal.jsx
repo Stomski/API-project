@@ -57,9 +57,23 @@ function CreateSpotModal({ navigate, spotId }) {
     }
   }, [dispatch, spotId, updatebool]);
 
+  useEffect(() => {
+    console.log("Errors updated:", errors);
+  }, [errors]);
+
   const createErrorObj = () => {
-    setErrors({});
+    console.log(
+      "%c errors log at top of create error object func line 61>",
+      "color:yellow; font-size: 26px",
+      errors
+    );
+
     const errorObj = {};
+    console.log(
+      "%c errorOBJ log at top of create error object func line 61>",
+      "color:yellow; font-size: 26px",
+      errorObj
+    );
     if (name === "") errorObj.name = "Name is required";
     if (city === "") errorObj.city = "City is required";
     if (state === "") errorObj.state = "State is required";
@@ -70,17 +84,17 @@ function CreateSpotModal({ navigate, spotId }) {
     if (price <= 0) errorObj.price = "Price per day must be a positive number";
     if (imageObj.previewImageUrl === "")
       errorObj.spotImages = "At least one image is required";
-    setErrors(errorObj);
+    return errorObj;
   };
 
   const handleSubmit = async (e) => {
     console.log("%c handleSubmit TOP OF CREATE", "color:blue; font-size: 26px");
-    console.log(Object.values(errors));
 
     e.preventDefault();
 
-    createErrorObj();
-
+    const errObj = createErrorObj();
+    setErrors(errObj);
+    console.log(errors);
     if (!Object.values(errors).length) {
       console.log(
         "%c handleSubmit TOP OF IFObject.values(errors)",
@@ -96,7 +110,8 @@ function CreateSpotModal({ navigate, spotId }) {
         city !== "" &&
         state !== "" &&
         country !== "" &&
-        address !== ""
+        address !== "" &&
+        imageObj.previewImageUrl !== ""
       ) {
         if (updatebool === false) {
           const spotData = {
