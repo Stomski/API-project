@@ -74,11 +74,23 @@ function CreateSpotModal({ navigate, spotId }) {
   };
 
   const handleSubmit = async (e) => {
+    console.log("%c handleSubmit TOP OF CREATE", "color:blue; font-size: 26px");
+    console.log(Object.values(errors));
+
     e.preventDefault();
 
     createErrorObj();
 
-    if (Object.values(errors).length) {
+    if (!Object.values(errors).length) {
+      console.log(
+        "%c handleSubmit TOP OF IFObject.values(errors)",
+        "color:blue; font-size: 26px"
+      );
+      console.log(
+        "%c Object.values(errors) log at top of ifs in handle>",
+        "color:red; font-size: 26px",
+        Object.values(errors)
+      );
       if (
         name !== "" &&
         city !== "" &&
@@ -100,7 +112,17 @@ function CreateSpotModal({ navigate, spotId }) {
           };
           const response = await dispatch(spotCreateThunk(spotData, imageObj));
 
-          navigate(`/spots/${response.id}`);
+          console.log(
+            "%c response fromt spot create thunj",
+            "color:yellow; font-size: 26px",
+            response
+          );
+          console.log(
+            "%c response.id log>",
+            "color:blue; font-size: 26px",
+            response.id
+          );
+          navigate(`/spots/${response.newSpot.id}`);
           closeModal();
         } else if (updatebool === true) {
           console.log("updating");
@@ -135,7 +157,7 @@ function CreateSpotModal({ navigate, spotId }) {
     <div className="modal-container">
       {!isLoaded && <h1>loading</h1>}
       {updatebool && isLoaded && <h1>Edit Your Spot!</h1>}
-      {updatebool && isLoaded && <h1>Create A Spot!</h1>}
+      {!updatebool && isLoaded && <h1>Create A Spot!</h1>}
 
       {isLoaded && (
         <form onSubmit={handleSubmit}>

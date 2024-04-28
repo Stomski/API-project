@@ -1,5 +1,4 @@
 import { csrfFetch } from "./csrf";
-import Cookies from "js-cookie";
 
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const LOAD_ONE = "spots/LOAD_ONE";
@@ -89,7 +88,8 @@ export const spotsByUserThunk = () => async (dispatch) => {
   dispatch(loadSpots(Object.values(resJson)));
 };
 
-export const spotCreateThunk = (spotData) => async (dispatch) => {
+export const spotCreateThunk = (spotData, imageObj) => async (dispatch) => {
+  console.log("%c spotCreateThunk called log>", "color:blue; font-size: 26px");
   // console.log(
   //   "%c JSON.stringify(spotData) log>",
   //   "color:blue; font-size: 26px",
@@ -100,18 +100,31 @@ export const spotCreateThunk = (spotData) => async (dispatch) => {
       "%c this is the startt of the try in my spot create thunk",
       "color:green; font-size: 26px"
     );
-    console.log("XSRF-Token:", Cookies.get("XSRF-TOKEN"));
+
     const response = await csrfFetch("/api/spots", {
       method: "POST",
       body: JSON.stringify(spotData),
     });
-    console.log("%c response log>", "color:red; font-size: 26px", response);
-    console.log(dispatch, "dispatch from spots.js");
+    // console.log("%c response log>", "color:red; font-size: 26px", response);
+    // console.log(dispatch, "dispatch from spots.js");
 
-    const returnObj = await response.json();
-    dispatch(addSpot(returnObj));
+    const newSpot = await response.json();
 
-    return returnObj;
+    const spotImgs = await Promise.all(
+      Object.values(imageObj).map(async (spotUrl) => {
+        const spot = { url: spotUrl, preview: false };
+
+        const res = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
+          method: "POST",
+          body: JSON.stringify(spot),
+        });
+        return { images: res.json(), spot: newSpot };
+      })
+    );
+
+    dispatch(addSpot(newSpot, spotImgs));
+
+    return { newSpot, spotImgs };
   } catch (e) {
     console.log("%c e log>", "color:blue; font-size: 26px", e);
     return e;
