@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchSpots } from "../../store/spots";
+import { fetchOneSpot, fetchSpots } from "../../store/spots";
 import { useEffect, useState } from "react";
 import { reviewFetch } from "../../store/reviews";
 import CreateReviewModal from "../CreateReviewFormModal/CreateReviewFormModal";
@@ -20,6 +20,7 @@ function SpotShow({ navigate }) {
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
   const [sessionUserOwns, setSessionUserOwns] = useState(false);
   const [spotState, setSpotState] = useState(spot);
+  const singleSpot = useSelector((state) => state.spots.singleSpot);
   // console.log(
   //   "%c alreadyReviewed log>",
   //   "color:red; font-size: 26px",
@@ -34,7 +35,7 @@ function SpotShow({ navigate }) {
   // );
 
   const getMonthYear = (review) => {
-    console.log(review.createdAt, "review from get month year");
+    // console.log(review.createdAt, "review from get month year");
     const splitArray = review.createdAt.split("-");
     const year = splitArray[0];
 
@@ -53,7 +54,7 @@ function SpotShow({ navigate }) {
       "December",
     ];
     const month = monthNames[splitArray[1] - 1];
-    console.log(month, year);
+    // console.log(month, year);
     const returnString = `${month}, ${year}`;
     return returnString;
   };
@@ -71,6 +72,10 @@ function SpotShow({ navigate }) {
     alert("Feature coming soon");
   };
 
+  // useEffect(() => {
+  //   dispatch(fetchOneSpot(spotId)).then(setIsLoaded(true));
+  // }, [spotId, isLoaded]);
+
   useEffect(() => {
     // console.log(
     //   "%c  spots in use effect called in spots.jsx>",
@@ -83,11 +88,12 @@ function SpotShow({ navigate }) {
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(fetchOneSpot(spotId));
     dispatch(fetchSpots(spotId)).then(() => {
       setIsLoaded(true);
     });
     dispatch(reviewFetch(spotId));
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId, isLoaded]);
 
   useEffect(() => {
     if (sessionUser && spot && sessionUser.id === spot.ownerId) {
@@ -95,7 +101,7 @@ function SpotShow({ navigate }) {
     }
     if (reviews && Object.values(reviews).length > 0 && isLoaded === true) {
       Object.values(reviews).forEach((review) => {
-        console.log("%c review log>", "color:red; font-size: 26px", review);
+        // console.log("%c review log>", "color:red; font-size: 26px", review);
         if (sessionUser && review.userId === sessionUser.id) {
           setAlreadyReviewed(true);
         }
@@ -120,20 +126,16 @@ function SpotShow({ navigate }) {
     <div className="spotshow">
       {isLoaded && spot && !spot.errors ? (
         <>
-          {console.log(
+          {/* {console.log(
             "%c spot log> at top of return spotsshow",
             "color:red; font-size: 26px",
             spot
-          )}
+          )} */}
           <h1>{spot.name}</h1>
           <div className="spot-details">
             <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
           </div>
-          {console.log(
-            "%c spot log> DITRECTLY ABOVEspot-show-image-containerw",
-            "color:red; font-size: 26px",
-            spot
-          )}
+
           {spot.SpotImages && spot.SpotImages.length === 0 && (
             <div id="spot-show-image-container">
               <div className="preview-image-div">
@@ -143,12 +145,6 @@ function SpotShow({ navigate }) {
                   src={spot.previewImage}
                   alt={`Spot Preview`}
                 />
-
-                {console.log(
-                  "%c spot log> BELOW preview imabe div",
-                  "color:red; font-size: 26px",
-                  spot
-                )}
               </div>
 
               <div id="spot-show-small-images">
@@ -161,7 +157,7 @@ function SpotShow({ navigate }) {
                   />
                 ))}
                 {spot.SpotImages.length < 5 &&
-                  Array.from({ length: 5 - spot.SpotImages.length }).map(
+                  Array.from({ length: 4 - spot.SpotImages.length }).map(
                     (_, index) => (
                       <img
                         key={`placeholder-${index}`}
@@ -176,11 +172,11 @@ function SpotShow({ navigate }) {
           )}
           {spot.SpotImages && spot.SpotImages.length > 0 && (
             <div id="spot-show-image-container">
-              {console.log(
+              {/* {console.log(
                 "%c spot log> spot-show-image-containerw",
                 "color:red; font-size: 26px",
                 spot
-              )}
+              )} */}
               <div className="preview-image-div">
                 {spot.SpotImages.slice(0, 1).map((image, index) => (
                   <img
@@ -190,11 +186,11 @@ function SpotShow({ navigate }) {
                     alt={`Spot Preview ${index + 1}`}
                   />
                 ))}
-                {console.log(
+                {/* {console.log(
                   "%c spot log> BELOW preview imabe div",
                   "color:red; font-size: 26px",
                   spot
-                )}
+                )} */}
               </div>
 
               <div id="spot-show-small-images">
@@ -222,10 +218,20 @@ function SpotShow({ navigate }) {
           )}
 
           <div className="below-images-div">
-            {spot && spot.Owner && (
+            {/* {console.log("%c spot log>", "color:blue; font-size: 26px", spot)} */}
+
+            {spot && spot.Owner ? (
               <div className="review-text-div">
                 <h2>
                   Hosted by: {`${spot.Owner.firstName} ${spot.Owner.lastName}`}{" "}
+                </h2>
+                <p className="spotshow-details">{`${spot.description}`}</p>
+              </div>
+            ) : (
+              <div className="review-text-div">
+                <h2>
+                  Hosted by:{" "}
+                  {`${singleSpot.Owner.firstName} ${singleSpot.Owner.lastName}`}{" "}
                 </h2>
                 <p className="spotshow-details">{`${spot.description}`}</p>
               </div>
@@ -268,8 +274,7 @@ function SpotShow({ navigate }) {
                   Object.values(reviews).length === 1 &&
                   "  Review"}
                 {Object.values(reviews) &&
-                  Object.values(reviews).length > 1 &&
-                  "  Reviews"}
+                  (Object.values(reviews).length > 1) & "  Reviews"}
               </div>
             </div>
 

@@ -6,6 +6,7 @@ const ADD_SPOT = "spots/ADD_SPOT";
 const GET_USERS_SPOTS = "spots/GET_USERS_SPOTS";
 const DELETE_SPOT = "spots/DELETE_SPOTS";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
+const SINGLE_SPOT_STORE = "spots/SINGLE_SPOT_STORE";
 
 export const updateSpot = (spot, imageArray) => ({
   type: UPDATE_SPOT,
@@ -15,6 +16,11 @@ export const updateSpot = (spot, imageArray) => ({
 
 export const deleteSpot = (spot) => ({
   type: DELETE_SPOT,
+  payload: spot,
+});
+
+export const addSingleSpot = (spot) => ({
+  type: SINGLE_SPOT_STORE,
   payload: spot,
 });
 
@@ -151,9 +157,22 @@ export const fetchSpots = (spotId) => async (dispatch) => {
   }
 };
 
+export const fetchOneSpot = (spotId) => async (dispatch) => {
+  const res = await fetch(`/api/spots/${spotId}`);
+  const spot = await res.json();
+  dispatch(addSingleSpot(spot));
+  return spot;
+};
+
 const spotsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
+    case SINGLE_SPOT_STORE: {
+      console.log("%c SINGLE_SPOT_STORE log>", "color:red; font-size: 26px");
+      newState = { ...state };
+      newState.singleSpot = action.payload;
+      return newState;
+    }
     case UPDATE_SPOT: {
       newState = { ...state };
       console.log(
@@ -200,6 +219,7 @@ const spotsReducer = (state = {}, action) => {
       // );
       newState = { ...state };
       if (action.payload.Spots) {
+        console.log("this i think is fucked up");
         action.payload.Spots.forEach((spot) => {
           newState[spot.id] = spot;
         });
@@ -208,7 +228,7 @@ const spotsReducer = (state = {}, action) => {
       if (action.payload) {
         newState = {};
         action.payload.forEach((spot) => {
-          newState[spot.id] = spot;
+          newState[singleSpot][spot.id] = spot;
         });
         return newState;
       }
