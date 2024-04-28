@@ -5,14 +5,21 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
-
+  const navigate = useNavigate();
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
+  };
+
+  const signInDemoUser = () => {
+    return dispatch(
+      sessionActions.login({ credential: "Mcurie", password: "password" })
+    );
   };
 
   useEffect(() => {
@@ -34,6 +41,7 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    navigate(`/`);
     closeMenu();
   };
 
@@ -47,6 +55,7 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
+            <h3>Hello {user.firstName}!</h3>
             <li>{user.username}</li>
             <li>
               {user.firstName} {user.lastName}
@@ -61,6 +70,9 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
+            <button className="demo-user" onClick={signInDemoUser}>
+              Log-in Demo User
+            </button>
             <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
