@@ -100,7 +100,17 @@ function CreateSpotModal({ navigate, spotId }) {
           };
           const response = await dispatch(spotCreateThunk(spotData, imageObj));
 
-          navigate(`/spots/${response.id}`);
+          console.log(
+            "%c response fromt spot create thunj",
+            "color:yellow; font-size: 26px",
+            response
+          );
+          console.log(
+            "%c response.id log>",
+            "color:blue; font-size: 26px",
+            response.id
+          );
+          navigate(`/spots/${response.newSpot.id}`);
           closeModal();
         } else if (updatebool === true) {
           console.log("updating");
