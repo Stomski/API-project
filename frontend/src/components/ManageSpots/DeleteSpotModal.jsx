@@ -3,6 +3,7 @@
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteSpotThunk } from "../../store/spots";
+import "./DeleteSpotModal.css";
 
 function DeleteSpotModal({ spotId }) {
   const dispatch = useDispatch();
@@ -22,14 +23,14 @@ function DeleteSpotModal({ spotId }) {
   };
 
   return (
-    <div className="login-modal-container">
+    <div className="delete-modal-container">
       <div className="form-container">
         <h1 id="modaltitles">Are You Sure?</h1>
 
-        <button type="submit" onClick={handleSubmit}>
+        <button type="submit" onClick={handleSubmit} className="delete">
           yes, delete
         </button>
-        <button type="submit" onClick={cancelDelete}>
+        <button type="submit" onClick={cancelDelete} className="cancel">
           Go Back
         </button>
       </div>

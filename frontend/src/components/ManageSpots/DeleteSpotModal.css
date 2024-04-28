@@ -1,0 +1,10 @@
+.delete {
+  background-color: crimson;
+  color: white;
+}
+.delete:hover {
+  background-color: red;
+}
+.cancel {
+  background-color: lightblue;
+}

@@ -10,8 +10,12 @@ import "./ManageSpots.css";
 
 const ManageSpots = () => {
   const sessionUser = useSelector((state) => state.session.user);
-  const spots = useSelector((state) => state.spots);
+  const allSpots = useSelector((state) => state.spots);
   const [isLoaded, setIsLoaded] = useState(false);
+  const spots = Object.values(allSpots).filter(
+    (spot) => spot.ownerId === sessionUser.id
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,8 +28,7 @@ const ManageSpots = () => {
     <>
       <h1>Manage Spots!</h1>
       <section className="manage-spots-div">
-        {isLoaded &&
-          spots &&
+        {isLoaded && spots && spots.length ? (
           Object.values(spots).map(
             (spot) =>
               spot.id &&
@@ -75,7 +78,18 @@ const ManageSpots = () => {
                   </div>
                 </div>
               )
-          )}
+          )
+        ) : (
+          <div className="create-spot-link">
+            {sessionUser && (
+              <OpenModalButton
+                navigate={navigate}
+                buttonText="No Spots yet, Create one!"
+                modalComponent={<CreateSpotModal navigate={navigate} />}
+              />
+            )}
+          </div>
+        )}
       </section>
     </>
   );
