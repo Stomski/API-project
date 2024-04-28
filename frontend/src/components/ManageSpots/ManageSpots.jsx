@@ -32,7 +32,7 @@ const ManageSpots = () => {
               !spot.Owner && (
                 <div key={spot.id} className="spot-tile">
                   <NavLink
-                    className="spot-tile"
+                    className="spotlink"
                     key={spot.id}
                     to={`/spots/${spot.id}`}
                   >
