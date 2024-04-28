@@ -65,6 +65,10 @@ function SpotShow({ navigate }) {
     return avgStars;
   };
 
+  const handleReserveClick = () => {
+    alert("Feature coming soon");
+  };
+
   useEffect(() => {
     dispatch(fetchSpots(spotId)).then(() => {
       setIsLoaded(true);
@@ -154,7 +158,9 @@ function SpotShow({ navigate }) {
 
               <div className="reserve-button-div">
                 <p>{spot.price} /night!</p>
-                <button id="reserve-button-id">Reserve now!</button>
+                <button id="reserve-button-id" onClick={handleReserveClick}>
+                  Reserve now!
+                </button>
               </div>
             </div>
           </div>
@@ -204,47 +210,56 @@ function SpotShow({ navigate }) {
                    *
                    */}
 
-                  {Object.values(reviews).map((review, index) => (
-                    <div key={index} className="review-individual">
-                      <div className="review-name">{review.User.firstName}</div>
-                      <div className="review-month">
-                        {Array.from({ length: review.stars }, (_, i) => (
-                          <span key={i}>&#9733;</span>
-                        ))}
-                        {getMonthYear(review)}
-                      </div>
-                      <div key={index}>
-                        <p>{review.review}</p>
-                      </div>
-                      <div>
-                        {/* {review.id} reviewId {review.userId} review userID{" "}
+                  {Object.values(reviews)
+                    .sort((a, b) => b.id - a.id)
+                    .map((review, index) => (
+                      <div key={index} className="review-individual">
+                        <div className="review-name">
+                          {review.User.firstName}
+                        </div>
+                        <div className="review-month">
+                          {Array.from({ length: review.stars }, (_, i) => (
+                            <span key={i}>&#9733;</span>
+                          ))}
+                          {getMonthYear(review)}
+                        </div>
+                        <div key={index}>
+                          <p>{review.review}</p>
+                        </div>
+                        <div>
+                          {/* {review.id} reviewId {review.userId} review userID{" "}
                         {sessionUser.id} session user ud to left */}
 
-                        {sessionUser && review.userId === sessionUser.id && (
-                          <>
-                            <OpenModalButton
+                          {sessionUser && review.userId === sessionUser.id && (
+                            <>
+                              {/* <OpenModalButton
                               navigate={navigate}
                               buttonText="edit your Review!"
                               modalComponent={
                                 <CreateReviewModal spotId={spot.id} />
                               }
-                            />
-                            <OpenModalButton
+                            /> */}
+
+                              <button onClick={handleReserveClick}>
+                                edit your review
+                              </button>
+                              {/* <OpenModalButton
                               navigate={navigate}
                               buttonText="delete your Review!"
                               modalComponent={
                                 <CreateReviewModal spotId={spot.id} />
                               }
-                            />
-                          </>
-                        )}
+                            /> */}
+                              <button onClick={handleReserveClick}>
+                                Delete your review!
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
-
-            <div className="review-button-div"></div>
           </div>
         </>
       ) : (
