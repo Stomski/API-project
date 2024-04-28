@@ -5,6 +5,7 @@ import "./Navigation.css";
 import favicon from "../../../src/favicon.ico";
 import OpenModalButton from "../OpenModalButton";
 import CreateSpotModal from "../CreateSpotForm";
+import { useCallback } from "react";
 
 function Navigation({ isLoaded, navigate }) {
   // console.log(
