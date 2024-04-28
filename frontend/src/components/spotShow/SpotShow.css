@@ -28,6 +28,7 @@
   width: 50%;
 }
 #spot-show-image-container {
+  width: 90%;
   display: flex;
   flex-direction: row;
 }

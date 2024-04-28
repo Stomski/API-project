@@ -35,7 +35,7 @@ function SpotShow({ navigate }) {
     console.log(review.createdAt, "review from get month year");
     const splitArray = review.createdAt.split("-");
     const year = splitArray[0];
-    const monthNum = splitArray[1];
+
     const monthNames = [
       "January",
       "February",
@@ -111,6 +111,17 @@ function SpotShow({ navigate }) {
                     alt={`Spot Preview ${index + 1}`}
                   />
                 ))}
+                {spot.SpotImages.length < 5 &&
+                  Array.from({ length: 5 - spot.SpotImages.length }).map(
+                    (_, index) => (
+                      <img
+                        key={`placeholder-${index}`}
+                        className="small-placeholder-img"
+                        src="https://res.cloudinary.com/dvnr49gnx/image/upload/v1713558499/samples/logo.png" // Replace with your placeholder image URL
+                        alt={`Placeholder Image ${index + 1}`}
+                      />
+                    )
+                  )}
               </div>
             </div>
           )}
