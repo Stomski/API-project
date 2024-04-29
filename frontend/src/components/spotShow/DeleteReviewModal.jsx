@@ -3,14 +3,16 @@ import { useModal } from "../../context/Modal";
 import { deleteReviewThunk } from "../../store/reviews";
 import "./DeleteReviewModal.css";
 
-function DeleteReviewModal({ reviewId }) {
+function DeleteReviewModal({ reviewId, spotId }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  console.log(reviewId, "reviewId");
+
+  console.log(reviewId, "reviewId", spotId);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(deleteReviewThunk(reviewId));
+
+    await dispatch(deleteReviewThunk(reviewId, spotId));
     closeModal();
     return;
   };

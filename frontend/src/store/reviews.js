@@ -19,11 +19,11 @@ export const loadReviews = (reviews) => ({
   payload: reviews,
 });
 
-export const deleteReviewThunk = (reviewId) => async (dispatch) => {
+export const deleteReviewThunk = (reviewId, spotId) => async (dispatch) => {
   await csrfFetch(`/api/reviews/${reviewId}`, {
     method: "DELETE",
   });
-  await dispatch(reviewFetch(reviewId));
+  await dispatch(reviewFetch(spotId));
   return;
 };
 
@@ -64,28 +64,16 @@ function reviewReducer(state = {}, action) {
     case ADD_REVIEW:
       newState = { ...state };
 
-      // console.log("%c newState log>", "color:green; font-size: 26px", newState);
-
-      // console.log(
-      //   "%c action in addreview called log>",
-      //   "color:orange; font-size: 26px",
-      //   action
-      // );
       newState[action.payload.id] = action.payload;
       return newState;
     case LOAD_REVIEWS:
       newState = {};
+      console.log(
+        "%c action in load reviews>",
+        "color:red; font-size: 26px",
+        action
+      );
 
-      // console.log(
-      //   "%c action.payload.reviews log>",
-      //   "color:blue; font-size: 26px",
-      //   action.payload.Reviews
-      // );
-      // console.log(
-      //   "%c LOAD_REVIEWS called in reviewReducer, good work dev>",
-      //   "color:blue; font-size: 26px",
-      //   state
-      // );
       if (action.payload.Reviews) {
         action.payload.Reviews.forEach((review) => {
           newState[review.id] = review;

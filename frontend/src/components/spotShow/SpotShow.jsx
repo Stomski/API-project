@@ -245,7 +245,12 @@ function SpotShow({ navigate }) {
             )}
 
             <div className="review-info-div">
-              {reviews && Object.values(reviews) > 0 ? (
+              {/* {console.log(
+                "%c reviews RIGHT ABOVE THE STAR SHOW>",
+                "color:blue; font-size: 26px",
+                reviews
+              )} */}
+              {reviews && Object.values(reviews).length > 0 ? (
                 <>
                   <div className="stars-show">
                     {findReviewAverage(reviews)} &#9733;
@@ -318,11 +323,11 @@ function SpotShow({ navigate }) {
                     .map((review, index) => (
                       <div key={index} className="review-individual">
                         <div className="review-name">
-                          {console.log(
+                          {/* {console.log(
                             "%c review log>",
                             "color:blue; font-size: 26px",
                             review
-                          )}
+                          )} */}
                           {review.User.firstName}
                         </div>
                         <div className="review-month">
@@ -361,7 +366,10 @@ function SpotShow({ navigate }) {
                               <OpenModalButton
                                 buttonText="Delete Review"
                                 modalComponent={
-                                  <DeleteReviewModal reviewId={review.id} />
+                                  <DeleteReviewModal
+                                    reviewId={review.id}
+                                    spotId={spotId}
+                                  />
                                 }
                               />
                             </>

@@ -168,7 +168,7 @@ const spotsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
     case SINGLE_SPOT_STORE: {
-      console.log("%c SINGLE_SPOT_STORE log>", "color:red; font-size: 26px");
+      // console.log("%c SINGLE_SPOT_STORE log>", "color:red; font-size: 26px");
       newState = { ...state };
       newState.singleSpot = action.payload;
       return newState;
