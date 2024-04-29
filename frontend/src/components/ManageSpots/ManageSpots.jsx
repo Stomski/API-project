@@ -26,11 +26,11 @@ const ManageSpots = () => {
   }, [dispatch, sessionUser]);
 
   useEffect(() => {
-    // console.log(
-    //   "%c  spots in use effect called in spots.jsx>",
-    //   "color:blue; font-size: 26px",
-    //   spots
-    // );
+    console.log(
+      "%c  spots in use effect called in spots.jsx>",
+      "color:blue; font-size: 26px",
+      spots
+    );
     dispatch(fetchSpots()).then(() => {
       setIsLoaded(true);
     });
@@ -58,9 +58,20 @@ const ManageSpots = () => {
                         src={spot.previewImage}
                         alt={`${spot.name} Preview Image`}
                       />
+
                       <h2 key={spot.name} className="spot-name">
                         {spot.name}
                       </h2>
+                      <div id="location-star-avg">
+                        {spot.avgRating > 1 ? (
+                          <>
+                            <span>&#9733;</span>
+                            <span>{spot.avgRating.toFixed(1)}</span>
+                          </>
+                        ) : (
+                          <>NEW!</>
+                        )}
+                      </div>
                       <div id="location-reviews"></div>
                       <p
                         key={spot.city}
