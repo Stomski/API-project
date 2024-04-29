@@ -230,10 +230,15 @@ function SpotShow({ navigate }) {
               </div>
             ) : (
               <div className="review-text-div">
-                <h2>
-                  Hosted by:{" "}
-                  {`${singleSpot.Owner.firstName} ${singleSpot.Owner.lastName}`}{" "}
-                </h2>
+                {singleSpot && singleSpot.Owner && (
+                  <>
+                    <h2>
+                      Hosted by:{" "}
+                      {`${singleSpot.Owner.firstName} ${singleSpot.Owner.lastName}`}{" "}
+                    </h2>
+                  </>
+                )}
+
                 <p className="spotshow-details">{`${spot.description}`}</p>
               </div>
             )}
