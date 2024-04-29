@@ -276,7 +276,9 @@ function SpotShow({ navigate }) {
                   <div className="stars-render-above-reviews">
                     <p> &#9733;</p>
                     <p className="star-label">{":   "}</p>
+
                     {findReviewAverage(reviews)}
+                    <p className="middot">&middot; {"  "}</p>
                   </div>
                 )}
               </div>
