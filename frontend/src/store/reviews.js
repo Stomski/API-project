@@ -2,6 +2,12 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_REVIEWS = "reviews/LOAD_REVIEWS";
 const ADD_REVIEW = "reviews/ADD_REVIEW";
+const DELETE_REVIEW = "reviews/DELETE_REVIEW";
+
+export const deleteReview = (reviewId) => ({
+  type: DELETE_REVIEW,
+  payload: reviewId,
+});
 
 export const addReview = (review) => ({
   type: ADD_REVIEW,
@@ -12,6 +18,14 @@ export const loadReviews = (reviews) => ({
   type: LOAD_REVIEWS,
   payload: reviews,
 });
+
+export const deleteReviewThunk = (reviewId) => async (dispatch) => {
+  await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "DELETE",
+  });
+  await dispatch(reviewFetch(reviewId));
+  return;
+};
 
 export const addReviewThunk = (review, user) => async (dispatch) => {
   // console.log("%c review log>", "color:blue; font-size: 26px", review);

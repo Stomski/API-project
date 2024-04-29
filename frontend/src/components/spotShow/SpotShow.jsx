@@ -6,6 +6,7 @@ import { reviewFetch } from "../../store/reviews";
 import CreateReviewModal from "../CreateReviewFormModal/CreateReviewFormModal";
 // import * as sessionActions from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
+import DeleteReviewModal from "./DeleteReviewModal";
 import "./SpotShow.css";
 
 function SpotShow({ navigate }) {
@@ -357,9 +358,12 @@ function SpotShow({ navigate }) {
                                 <CreateReviewModal spotId={spot.id} />
                               }
                             /> */}
-                              <button onClick={handleReserveClick}>
-                                Delete your review!
-                              </button>
+                              <OpenModalButton
+                                buttonText="Delete Review"
+                                modalComponent={
+                                  <DeleteReviewModal reviewId={review.id} />
+                                }
+                              />
                             </>
                           )}
                         </div>
