@@ -13,7 +13,7 @@ export const loadReviews = (reviews) => ({
   payload: reviews,
 });
 
-export const addReviewThunk = (review) => async (dispatch) => {
+export const addReviewThunk = (review, user) => async (dispatch) => {
   // console.log("%c review log>", "color:blue; font-size: 26px", review);
   const response = await csrfFetch(`/api/spots/${review.spotId}/reviews`, {
     method: "POST",
@@ -26,6 +26,8 @@ export const addReviewThunk = (review) => async (dispatch) => {
     "color:yellow; font-size: 26px",
     responseJson
   );
+
+  responseJson.User = user;
 
   dispatch(addReview(responseJson));
   return responseJson;

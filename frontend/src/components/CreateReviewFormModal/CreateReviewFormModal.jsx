@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "../CreateReviewFormModal/CreateReviewFormModal.css";
 import { useState } from "react";
@@ -10,6 +10,7 @@ function CreateReviewModal({ spotId }) {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const sessionUser = useSelector((state) => state.session.user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,9 +22,15 @@ function CreateReviewModal({ spotId }) {
     const reviewObj = { review, stars, spotId };
     setErrors({});
     // navigate(`/spots/${thunkReply.id}`);
-    return dispatch(addReviewThunk(reviewObj))
+
+    return dispatch(addReviewThunk(reviewObj, sessionUser))
       .then(closeModal)
       .catch(async (res) => {
+        console.log(
+          "%c res log> in create review form modal",
+          "color:teal; font-size: 26px",
+          res
+        );
         const data = await res.json();
         if (data && data.message) {
           setErrors({ message: data.message });

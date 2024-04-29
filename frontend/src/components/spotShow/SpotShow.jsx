@@ -312,6 +312,11 @@ function SpotShow({ navigate }) {
                     .map((review, index) => (
                       <div key={index} className="review-individual">
                         <div className="review-name">
+                          {console.log(
+                            "%c review log>",
+                            "color:blue; font-size: 26px",
+                            review
+                          )}
                           {review.User.firstName}
                         </div>
                         <div className="review-month">
