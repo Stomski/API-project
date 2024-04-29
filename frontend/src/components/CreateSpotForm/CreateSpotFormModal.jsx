@@ -371,7 +371,16 @@ function CreateSpotModal({ navigate, spotId }) {
             {/* input */}
           </div>
           <div className="submit-button-Div">
-            <button type="submit">Submit Spot!</button>
+            {console.log(
+              "%c updatebool log>",
+              "color:red; font-size: 26px",
+              updatebool
+            )}
+            {updatebool ? (
+              <button type="submit">Update Spot!</button>
+            ) : (
+              <button type="submit">Create Spot!</button>
+            )}
           </div>
         </form>
       )}
