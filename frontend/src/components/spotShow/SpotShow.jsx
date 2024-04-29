@@ -285,11 +285,12 @@ function SpotShow({ navigate }) {
                 <OpenModalButton
                   navigate={navigate}
                   buttonText="Create a Review!"
-                  modalComponent={<CreateReviewModal spotId={spot.id} />}
+                  modalComponent={<CreateReviewModal spotId={spotId} />}
                 />
               )}
             </div>
-            {sessionUser.id !== spot.ownerId &&
+            {sessionUser &&
+              sessionUser.id !== spot.ownerId &&
               (!reviews || Object.values(reviews).length < 1) && (
                 <h3>be the first to subit a review!</h3>
               )}
