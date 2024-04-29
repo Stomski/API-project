@@ -37,7 +37,8 @@ const reviewValidator = (req, res, next) => {
 router.delete("/:reviewId", requireAuth, async (req, res, next) => {
   const reviewId = req.params.reviewId;
   const currUser = req.user.id;
-
+  console.log(currUser, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  console.log(reviewId);
   const foundReview = await Review.findByPk(reviewId);
 
   if (!foundReview) {
