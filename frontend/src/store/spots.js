@@ -114,6 +114,12 @@ export const spotCreateThunk = (spotData, imageObj) => async (dispatch) => {
     // console.log("%c response log>", "color:red; font-size: 26px", response);
     // console.log(dispatch, "dispatch from spots.js");
 
+    console.log(
+      "%c Object.values(imageObj) log>",
+      "color:red; font-size: 26px",
+      Object.values(imageObj)
+    );
+
     const newSpot = await response.json();
 
     const spotImgs = await Promise.all(
@@ -182,7 +188,9 @@ const spotsReducer = (state = {}, action) => {
         newState
       );
       newState[action.payload.id] = action.payload;
-      newState[action.payload.id].imageArray = action.imageArray;
+      if (action.imageArray.length > 0) {
+        newState[action.payload.id].imageArray = action.imageArray;
+      }
       return newState;
     }
 
@@ -219,7 +227,6 @@ const spotsReducer = (state = {}, action) => {
       // );
       newState = { ...state };
       if (action.payload.Spots) {
-        console.log("this i think is fucked up");
         action.payload.Spots.forEach((spot) => {
           newState[spot.id] = spot;
         });

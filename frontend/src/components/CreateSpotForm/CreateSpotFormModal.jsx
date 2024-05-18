@@ -39,6 +39,7 @@ function CreateSpotModal({ navigate, spotId }) {
         setName(spot.name);
         setDescription(spot.description);
         setPrice(spot.price);
+        setImageObj({ previewImageUrl: spot.previewImageUrl });
         setUpdateBool(true);
         setIsLoaded(true);
       });
@@ -82,7 +83,7 @@ function CreateSpotModal({ navigate, spotId }) {
     if (description.length < 30)
       errorObj.description = "Description must be at least 30 characters";
     if (price <= 0) errorObj.price = "Price per day must be a positive number";
-    if (imageObj.previewImageUrl === "")
+    if (imageObj.previewImageUrl === "" && updatebool === false)
       errorObj.spotImages = "At least one image is required";
     return errorObj;
   };
@@ -110,10 +111,9 @@ function CreateSpotModal({ navigate, spotId }) {
         city !== "" &&
         state !== "" &&
         country !== "" &&
-        address !== "" &&
-        imageObj.previewImageUrl !== ""
+        address !== ""
       ) {
-        if (updatebool === false) {
+        if (updatebool === false && imageObj.previewImageUrl !== "") {
           const spotData = {
             country,
             address,
@@ -140,6 +140,9 @@ function CreateSpotModal({ navigate, spotId }) {
           navigate(`/spots/${response.newSpot.id}`);
           closeModal();
         } else if (updatebool === true) {
+          if (imageObj.previewImageUrl === "") {
+            imageObj.previewImageUrl = spot.previewImageUrl;
+          }
           console.log("updating");
           const spotData = {
             id: spotId,
